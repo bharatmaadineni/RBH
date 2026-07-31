@@ -13,6 +13,7 @@ export interface Track {
   coverUrl: string;
   audioUrl: string;
   duration: number; // in seconds
+  fileSize?: string; // e.g. "10.6 MB"
   genre: string;
   playCount: number;
   likes: number;

@@ -38,12 +38,14 @@ interface AppContextType {
   seek: (seconds: number) => void;
   setVolume: (vol: number) => void;
   toggleShuffle: () => void;
+  shufflePlay: (customTracks?: Track[]) => void;
   toggleRepeat: () => void;
   setEqualizer: (mode: 'flat' | 'bass' | 'treble' | 'electronic' | 'vocal' | 'chill') => void;
   setCrossfade: (enabled: boolean) => void;
   setSleepTimer: (minutes: number | null) => void;
   addToQueue: (track: Track) => void;
   removeFromQueue: (trackId: string) => void;
+  addTrackToPlaylist: (trackId: string, playlistId?: string) => void;
 
   // User & Authentication
   user: UserProfile | null;
@@ -60,6 +62,10 @@ interface AppContextType {
   albums: Album[];
   artists: Artist[];
   playlists: Playlist[];
+  setPlaylists: React.Dispatch<React.SetStateAction<Playlist[]>>;
+  setTracks: React.Dispatch<React.SetStateAction<Track[]>>;
+  setAlbums: React.Dispatch<React.SetStateAction<Album[]>>;
+  setArtists: React.Dispatch<React.SetStateAction<Artist[]>>;
   favorites: string[];
   savedAlbums: string[];
   followedArtists: string[];
@@ -199,12 +205,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     // Check if user is logged in
     const cachedUser = db.getUser();
-    if (cachedUser && cachedUser.uid !== 'guest') {
+    if (cachedUser && cachedUser.uid && cachedUser.uid !== 'guest' && cachedUser.uid !== 'user_default' && cachedUser.email) {
       setUser(cachedUser);
       setIsLoggedIn(true);
       setActiveView('home');
       db.incrementListeningStreak();
     } else {
+      setUser(null);
+      setIsLoggedIn(false);
       setActiveView('auth');
     }
     refreshMusicDb();
@@ -272,11 +280,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }
     };
 
+    const handleError = () => {
+      if (audio.src && !audio.src.includes('SoundHelix-Song')) {
+        console.warn('Audio stream failed or missing local file, falling back to default stream.');
+        audio.src = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
+        safePlay();
+      }
+    };
+
     audio.addEventListener('play', handlePlay);
     audio.addEventListener('pause', handlePause);
     audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('durationchange', handleDurationChange);
     audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('error', handleError);
 
     return () => {
       audio.removeEventListener('play', handlePlay);
@@ -284,6 +301,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       audio.removeEventListener('timeupdate', handleTimeUpdate);
       audio.removeEventListener('durationchange', handleDurationChange);
       audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('error', handleError);
     };
   }, [queue, queueIndex, repeat, shuffle]);
 
@@ -472,9 +490,50 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
+  const shufflePlay = (customTracks?: Track[]) => {
+    const pool = customTracks && customTracks.length > 0 ? customTracks : (queue.length > 0 ? queue : tracks);
+    if (pool.length === 0) return;
+
+    // Fisher-Yates shuffle algorithm on total queue songs
+    const shuffledPool = [...pool];
+    for (let i = shuffledPool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledPool[i], shuffledPool[j]] = [shuffledPool[j], shuffledPool[i]];
+    }
+
+    setShuffle(true);
+    setQueue(shuffledPool);
+    setQueueIndex(0);
+
+    const firstTrack = shuffledPool[0];
+    if (firstTrack.isPremium && (!user || user.subscriptionStatus !== 'premium')) {
+      const nonPrem = shuffledPool.find(t => !t.isPremium);
+      if (nonPrem) {
+        const nonPremIdx = shuffledPool.findIndex(t => t.id === nonPrem.id);
+        setQueueIndex(nonPremIdx);
+        setCurrentTrack(nonPrem);
+        db.addToHistory(nonPrem.id);
+      } else {
+        showToast('⭐️ Aura Premium required for these tracks', 'warning');
+        return;
+      }
+    } else {
+      setCurrentTrack(firstTrack);
+      db.addToHistory(firstTrack.id);
+    }
+
+    setIsPlaying(true);
+    safePlay();
+    showToast(`Shuffled & automatically playing ${shuffledPool.length} queue songs!`, 'success');
+  };
+
   const toggleShuffle = () => {
-    setShuffle(prev => !prev);
-    showToast(shuffle ? 'Shuffle Off' : 'Shuffle On', 'info');
+    if (!shuffle) {
+      shufflePlay();
+    } else {
+      setShuffle(false);
+      showToast('Shuffle Off', 'info');
+    }
   };
 
   const toggleRepeat = () => {
@@ -542,6 +601,31 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const removeFromQueue = (trackId: string) => {
     setQueue(prev => prev.filter(t => t.id !== trackId));
     showToast('Track removed from queue', 'info');
+  };
+
+  const addTrackToPlaylist = (trackId: string, playlistId: string = 'pl_dm1') => {
+    const targetPlaylist = playlists.find(p => p.id === playlistId);
+    if (!targetPlaylist) {
+      showToast('Playlist not found', 'error');
+      return;
+    }
+
+    if (targetPlaylist.tracks.includes(trackId)) {
+      showToast(`Song is already in ${targetPlaylist.name}`, 'info');
+      return;
+    }
+
+    const updated = playlists.map(p => {
+      if (p.id === playlistId) {
+        return { ...p, tracks: [...p.tracks, trackId] };
+      }
+      return p;
+    });
+
+    setPlaylists(updated);
+    db.setPlaylists(updated);
+    const trackObj = tracks.find(t => t.id === trackId);
+    showToast(`Added "${trackObj?.title || 'Song'}" to ${targetPlaylist.name}!`, 'success');
   };
 
   // Auth / User Handlers
@@ -828,12 +912,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         seek,
         setVolume,
         toggleShuffle,
+        shufflePlay,
         toggleRepeat,
         setEqualizer,
         setCrossfade,
         setSleepTimer,
         addToQueue,
         removeFromQueue,
+        addTrackToPlaylist,
         user,
         isLoggedIn,
         login,
@@ -846,6 +932,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         albums,
         artists,
         playlists,
+        setPlaylists,
+        setTracks,
+        setAlbums,
+        setArtists,
         favorites,
         savedAlbums,
         followedArtists,

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Music, Radio, Volume2 } from 'lucide-react';
+import { Music } from 'lucide-react';
 
 interface SplashScreenProps {
   onComplete: () => void;
@@ -118,13 +118,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
         />
       </div>
 
-      {/* Skip Button (allows fast dismiss) */}
-      <button
-        onClick={onComplete}
-        className="absolute bottom-4 text-[11px] font-bold uppercase tracking-wider text-white/40 hover:text-white transition-colors cursor-pointer py-1 px-3"
-      >
-        Skip Intro
-      </button>
+
     </motion.div>
   );
 };

@@ -22,7 +22,7 @@ const TRACK_URLS = [
 export const INITIAL_ARTISTS: Artist[] = [
   {
     id: 'art_1',
-    name: 'The Retro Wave',
+    name: 'Rbh immersive high-fidelity',
     avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&q=80',
     bio: 'Pioneering neon retro-wave collective blending nostalgic 80s synthesizers with modern cyberpunk basslines.',
     followers: 245300,
@@ -63,8 +63,8 @@ export const INITIAL_ALBUMS: Album[] = [
     coverUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80',
     releaseDate: '2025-05-12',
     genre: 'Synthwave',
-    description: 'A nostalgic high-octane journey down a neon-lit cyber highway.',
-    tracks: ['tr_1', 'tr_2', 'tr_3'],
+    description: 'A nostalgic high-octane journey featuring Meghallo.',
+    tracks: ['tr_11'],
   },
   {
     id: 'alb_2',
@@ -74,8 +74,8 @@ export const INITIAL_ALBUMS: Album[] = [
     coverUrl: 'https://images.unsplash.com/photo-1518173946687-a4c8a383392e?w=400&q=80',
     releaseDate: '2025-11-20',
     genre: 'Lo-fi Chill',
-    description: 'Organic textures and soothing lo-fi field recordings to study, work, and relax to.',
-    tracks: ['tr_4', 'tr_5'],
+    description: 'Organic textures and soothing field recordings.',
+    tracks: ['tr_11'],
   },
   {
     id: 'alb_3',
@@ -85,8 +85,8 @@ export const INITIAL_ALBUMS: Album[] = [
     coverUrl: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=400&q=80',
     releaseDate: '2026-02-14',
     genre: 'Acoustic',
-    description: 'Intimate fireplace recordings capturing pure guitar resonance and deep introspective themes.',
-    tracks: ['tr_6', 'tr_7', 'tr_8'],
+    description: 'Intimate fireplace recordings capturing pure acoustic resonance.',
+    tracks: ['tr_11'],
   },
   {
     id: 'alb_4',
@@ -96,204 +96,110 @@ export const INITIAL_ALBUMS: Album[] = [
     coverUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&q=80',
     releaseDate: '2026-06-30',
     genre: 'House',
-    description: 'Pulsing rhythms and baseline grooves designed for the peak-hour underground experience.',
-    tracks: ['tr_9', 'tr_10'],
+    description: 'Pulsing rhythms and baseline grooves.',
+    tracks: ['tr_11'],
   },
 ];
 
 export const INITIAL_TRACKS: Track[] = [
   {
-    id: 'tr_1',
-    title: 'Midnight Driver',
+    id: 'tr_11',
+    title: 'Meghallo',
     artistId: 'art_1',
-    artistName: 'The Retro Wave',
+    artistName: 'Rbh immersive high-fidelity',
     albumId: 'alb_1',
     albumName: 'Neon Horizon',
-    coverUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80',
-    audioUrl: TRACK_URLS[0],
-    duration: 372,
+    coverUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&q=80',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/Meghaallo-SenSongsMp3.Co(2).mp3',
+    duration: 278,
     genre: 'Synthwave',
-    playCount: 125430,
-    likes: 5430,
+    playCount: 185000,
+    likes: 9200,
     lyrics: [
-      { time: 0, text: "[Instrumental Synth Intro]" },
-      { time: 15, text: "Glow in the dark, we're driving fast" },
-      { time: 22, text: "Chasing the shadows of our retro past" },
-      { time: 30, text: "Neon lights cut through the night sky" },
-      { time: 38, text: "Nothing can stop us as we cruise by" },
-      { time: 45, text: "[Chorus]" },
-      { time: 46, text: "Midnight driver, speed of sound" },
-      { time: 54, text: "We never let our wheels touch the ground" },
-      { time: 61, text: "In the grid, we are forever free" },
-      { time: 68, text: "Just you, the neon, and me" },
-      { time: 76, text: "[Instrumental Synth Solo]" },
+      { time: 0, text: "[Melodic Intro]" },
+      { time: 12, text: "Meghallo floating high above the clouds" },
+      { time: 24, text: "Lost in the rhythm away from the crowds" },
+      { time: 36, text: "Feel the breeze carrying our song tonight" },
+      { time: 48, text: "Dancing in the warm golden light" },
     ],
   },
   {
-    id: 'tr_2',
-    title: 'Cyber Highway',
+    id: 'tr_12',
+    title: 'DARSHANA',
     artistId: 'art_1',
-    artistName: 'The Retro Wave',
+    artistName: 'Rbh immersive high-fidelity',
     albumId: 'alb_1',
-    albumName: 'Neon Horizon',
-    coverUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80',
-    audioUrl: TRACK_URLS[1],
-    duration: 423,
-    genre: 'Synthwave',
-    playCount: 94820,
-    likes: 4120,
-    lyrics: [
-      { time: 0, text: "[Electronic Beats]" },
-      { time: 10, text: "Data streams flowing through my brain" },
-      { time: 18, text: "Riding the waves of this cyber highway again" },
-      { time: 26, text: "Grid coordinates locked in place" },
-      { time: 34, text: "Lost in the binary, floating in space" },
-    ],
-  },
-  {
-    id: 'tr_3',
-    title: 'Retro Dreamer',
-    artistId: 'art_1',
-    artistName: 'The Retro Wave',
-    albumId: 'alb_1',
-    albumName: 'Neon Horizon',
-    coverUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80',
-    audioUrl: TRACK_URLS[2],
-    duration: 312,
-    genre: 'Synthwave',
-    playCount: 74210,
-    likes: 3120,
-    isPremium: true,
-  },
-  {
-    id: 'tr_4',
-    title: 'Lost in Leaves',
-    artistId: 'art_2',
-    artistName: 'Luna Echoes',
-    albumId: 'alb_2',
-    albumName: 'Forest Whispers',
-    coverUrl: 'https://images.unsplash.com/photo-1518173946687-a4c8a383392e?w=400&q=80',
-    audioUrl: TRACK_URLS[3],
-    duration: 254,
-    genre: 'Lo-fi Chill',
-    playCount: 245000,
-    likes: 12400,
-    lyrics: [
-      { time: 0, text: "[Rain sound and vinyl crackle]" },
-      { time: 12, text: "Falling leaves, rustle in the breeze..." },
-      { time: 24, text: "Calm your mind, put yourself at ease" },
-      { time: 36, text: "No more worries, no more rush" },
-      { time: 48, text: "Just the forest and this sacred hush" },
-    ],
-  },
-  {
-    id: 'tr_5',
-    title: 'Raindrops & Coffee',
-    artistId: 'art_2',
-    artistName: 'Luna Echoes',
-    albumId: 'alb_2',
-    albumName: 'Forest Whispers',
-    coverUrl: 'https://images.unsplash.com/photo-1518173946687-a4c8a383392e?w=400&q=80',
-    audioUrl: TRACK_URLS[4],
-    duration: 198,
-    genre: 'Lo-fi Chill',
-    playCount: 312450,
-    likes: 15300,
-  },
-  {
-    id: 'tr_6',
-    title: 'Fireplace Chords',
-    artistId: 'art_3',
-    artistName: 'Acoustic Dreams',
-    albumId: 'alb_3',
-    albumName: 'Starlight Memories',
-    coverUrl: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=400&q=80',
-    audioUrl: TRACK_URLS[5],
-    duration: 215,
-    genre: 'Acoustic',
-    playCount: 45200,
-    likes: 1840,
-    lyrics: [
-      { time: 0, text: "[Acoustic Guitar Fingerpicking]" },
-      { time: 8, text: "Warm flames dance in your eyes" },
-      { time: 16, text: "Underneath these silent winter skies" },
-      { time: 24, text: "Fingers tracking down the wooden neck" },
-      { time: 32, text: "Giving feelings that I never checked" },
-    ],
-  },
-  {
-    id: 'tr_7',
-    title: 'Guitar Under the Moon',
-    artistId: 'art_3',
-    artistName: 'Acoustic Dreams',
-    albumId: 'alb_3',
-    albumName: 'Starlight Memories',
-    coverUrl: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=400&q=80',
-    audioUrl: TRACK_URLS[6],
-    duration: 248,
-    genre: 'Acoustic',
-    playCount: 68120,
-    likes: 2940,
-  },
-  {
-    id: 'tr_8',
-    title: 'Starlight Memories',
-    artistId: 'art_3',
-    artistName: 'Acoustic Dreams',
-    albumId: 'alb_3',
-    albumName: 'Starlight Memories',
-    coverUrl: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=400&q=80',
-    audioUrl: TRACK_URLS[7],
-    duration: 289,
-    genre: 'Acoustic',
-    playCount: 110430,
-    likes: 5800,
-    isPremium: true,
-  },
-  {
-    id: 'tr_9',
-    title: 'Subway Beats',
-    artistId: 'art_4',
-    artistName: 'Vibe Selector',
-    albumId: 'alb_4',
-    albumName: 'Midnight Gridlock',
+    albumName: 'Hridayam BGM',
     coverUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&q=80',
-    audioUrl: TRACK_URLS[8],
-    duration: 322,
-    genre: 'House',
-    playCount: 521000,
-    likes: 21500,
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/Darshana%20song%20bgm%20_%20hridayam%20bgm%20ringtone_best%20bgm%20_%20trending%20Telugu%20bgm%20ringtones%20_%209BgmMusic(2).m4a',
+    duration: 180,
+    genre: 'Soundtrack BGM',
+    playCount: 210000,
+    likes: 14500,
     lyrics: [
-      { time: 0, text: "[Four on the Floor House Intro]" },
-      { time: 16, text: "Feel the rumble of the subway line" },
-      { time: 24, text: "Dancing in the shadows, losing track of time" },
-      { time: 32, text: "Heavy bass pumping through the floor" },
-      { time: 40, text: "You can hear the people crying out for more" },
+      { time: 0, text: "[Darshana Instrumental BGM Intro]" },
+      { time: 15, text: "Feel the pulse of Hridayam melodies" },
+      { time: 30, text: "Darshana reverberating in high-fidelity" },
     ],
   },
   {
-    id: 'tr_10',
-    title: 'Midnight Grooves',
-    artistId: 'art_4',
-    artistName: 'Vibe Selector',
-    albumId: 'alb_4',
-    albumName: 'Midnight Gridlock',
-    coverUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&q=80',
-    audioUrl: TRACK_URLS[9],
-    duration: 354,
-    genre: 'House',
-    playCount: 632000,
-    likes: 28400,
+    id: 'tr_13',
+    title: 'anthinthom',
+    artistId: 'art_1',
+    artistName: 'Rbh immersive high-fidelity',
+    albumId: 'alb_1',
+    albumName: 'Vaishali Classic',
+    coverUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&q=80',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/Athinthom_-_S_P_Balasubrahmanyam_Vaishali(2).mp3',
+    duration: 278,
+    genre: 'Classic Melody',
+    playCount: 235000,
+    likes: 16800,
+    lyrics: [
+      { time: 0, text: "[Athinthom Classical Instrumental Intro]" },
+      { time: 15, text: "Athinthom rhythm by S.P. Balasubrahmanyam" },
+      { time: 30, text: "Timeless Vaishali melody in high-fidelity" },
+    ],
+  },
+  {
+    id: 'tr_14',
+    title: 'karthikeya',
+    artistId: 'art_1',
+    artistName: 'Rbh immersive high-fidelity',
+    albumId: 'alb_1',
+    albumName: 'Karthikeya 2 BGM',
+    coverUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&q=80',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/karthikeya_2_flute_bgm.mp3',
+    duration: 145,
+    genre: 'Soundtrack BGM',
+    playCount: 260000,
+    likes: 19500,
+    lyrics: [
+      { time: 0, text: "[Karthikeya Flute BGM Theme Intro]" },
+      { time: 12, text: "Mystic flute melody echoing with divine resonance" },
+      { time: 28, text: "Karthikeya 2 theme in immersive high-fidelity" },
+    ],
   },
 ];
 
 export const INITIAL_PLAYLISTS: Playlist[] = [
   {
+    id: 'pl_dm1',
+    name: 'FAVOURITE MUSIC',
+    description: 'Your curated favourite tracks featuring Meghallo, DARSHANA, anthinthom & karthikeya.',
+    coverUrl: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=400&q=80',
+    tracks: ['tr_11', 'tr_12', 'tr_13', 'tr_14'],
+    isPublic: true,
+    isCollaborative: true,
+    createdBy: 'system',
+    createdAt: '2026-01-01T00:00:00.000Z',
+  },
+  {
     id: 'pl_1',
     name: 'Chill Vibes',
     description: 'Perfect lofi beats, atmospheric ambient textures, and soft acoustics.',
     coverUrl: 'https://images.unsplash.com/photo-1518173946687-a4c8a383392e?w=400&q=80',
-    tracks: ['tr_4', 'tr_5', 'tr_6', 'tr_7'],
+    tracks: ['tr_11'],
     isPublic: true,
     isCollaborative: false,
     createdBy: 'system',
@@ -304,9 +210,9 @@ export const INITIAL_PLAYLISTS: Playlist[] = [
     name: "Today's Top Hits",
     description: 'The hottest tracks trending on the airwaves.',
     coverUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&q=80',
-    tracks: ['tr_1', 'tr_2', 'tr_9', 'tr_10'],
+    tracks: ['tr_11'],
     isPublic: true,
-    isCollaborative: true,
+    isCollaborative: false,
     createdBy: 'system',
     createdAt: '2026-02-01T00:00:00.000Z',
   },
@@ -315,7 +221,7 @@ export const INITIAL_PLAYLISTS: Playlist[] = [
     name: 'Workout Hits',
     description: 'High octane progressive electronic and bass rhythms to drive energy.',
     coverUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=400&q=80',
-    tracks: ['tr_1', 'tr_3', 'tr_9'],
+    tracks: ['tr_11'],
     isPublic: true,
     isCollaborative: false,
     createdBy: 'system',
@@ -326,7 +232,7 @@ export const INITIAL_PLAYLISTS: Playlist[] = [
     name: 'Peaceful Piano',
     description: 'Beautiful ambient classical keys and solo piano compositions.',
     coverUrl: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?w=400&q=80',
-    tracks: ['tr_5', 'tr_7'],
+    tracks: ['tr_11'],
     isPublic: true,
     isCollaborative: false,
     createdBy: 'system',
@@ -384,16 +290,15 @@ const KEYS = {
   SAVED_ALBUMS: 'aura_saved_albums',
 };
 
-// Initial User Profile
+// Initial User Profile (Default unauthenticated / guest)
 const DEFAULT_USER: UserProfile = {
-  uid: 'user_default',
-  username: 'RBH Listener',
-  email: 'bharatmaadineni3267@gmail.com',
+  uid: 'guest',
+  username: 'Guest Listener',
+  email: '',
   subscriptionStatus: 'free',
   avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&q=80',
-  listeningStreak: 5,
-  listeningTime: 1240,
-  streakLastUpdated: '2026-07-21',
+  listeningStreak: 0,
+  listeningTime: 0,
 };
 
 // Default Friend Activity
@@ -464,11 +369,81 @@ const DEFAULT_STATS: ListeningStats = {
 // Database class helper to export
 export const db = {
   // Authentication / User Profile
-  getUser: (): UserProfile => getLocalStorage<UserProfile>(KEYS.USER, DEFAULT_USER),
+  getUser: (): UserProfile => {
+    const stored = getLocalStorage<UserProfile>(KEYS.USER, DEFAULT_USER);
+    if (stored && stored.uid === 'user_default') {
+      setLocalStorage<UserProfile>(KEYS.USER, DEFAULT_USER);
+      return DEFAULT_USER;
+    }
+    return stored || DEFAULT_USER;
+  },
   setUser: (user: UserProfile) => setLocalStorage<UserProfile>(KEYS.USER, user),
   
   // Tracks
-  getTracks: (): Track[] => getLocalStorage<Track[]>(KEYS.TRACKS, INITIAL_TRACKS),
+  getTracks: (): Track[] => {
+    const stored = getLocalStorage<Track[]>(KEYS.TRACKS, INITIAL_TRACKS);
+    const storedIds = new Set(stored.map(t => t.id));
+    const missingInitials = INITIAL_TRACKS.filter(t => !storedIds.has(t.id));
+    let result = stored;
+    if (missingInitials.length > 0) {
+      result = [...stored, ...missingInitials];
+    }
+    // Filter to tr_11, tr_12, tr_13, tr_14 and matching titles
+    result = result.filter(t => t.id === 'tr_11' || t.id === 'tr_12' || t.id === 'tr_13' || t.id === 'tr_14' || t.title.toLowerCase().includes('meghallo') || t.title.toLowerCase().includes('darshana') || t.title.toLowerCase().includes('anthinthom') || t.title.toLowerCase().includes('karthikeya'));
+    if (!result.some(t => t.id === 'tr_12')) {
+      const darshana = INITIAL_TRACKS.find(t => t.id === 'tr_12');
+      if (darshana) result.push(darshana);
+    }
+    if (!result.some(t => t.id === 'tr_13')) {
+      const anthinthom = INITIAL_TRACKS.find(t => t.id === 'tr_13');
+      if (anthinthom) result.push(anthinthom);
+    }
+    if (!result.some(t => t.id === 'tr_14')) {
+      const karthikeya = INITIAL_TRACKS.find(t => t.id === 'tr_14');
+      if (karthikeya) result.push(karthikeya);
+    }
+    result = result.map(t => {
+      if (t.id === 'tr_11') {
+        return {
+          ...t,
+          title: 'Meghallo',
+          audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/Meghaallo-SenSongsMp3.Co(2).mp3',
+          artistName: 'Rbh immersive high-fidelity',
+          fileSize: '10.6 MB',
+        };
+      }
+      if (t.id === 'tr_12') {
+        return {
+          ...t,
+          title: 'DARSHANA',
+          audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/Darshana%20song%20bgm%20_%20hridayam%20bgm%20ringtone_best%20bgm%20_%20trending%20Telugu%20bgm%20ringtones%20_%209BgmMusic(2).m4a',
+          artistName: 'Rbh immersive high-fidelity',
+          fileSize: '6.9 MB',
+        };
+      }
+      if (t.id === 'tr_13') {
+        return {
+          ...t,
+          title: 'anthinthom',
+          audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/Athinthom_-_S_P_Balasubrahmanyam_Vaishali(2).mp3',
+          artistName: 'Rbh immersive high-fidelity',
+          fileSize: '10.6 MB',
+        };
+      }
+      if (t.id === 'tr_14') {
+        return {
+          ...t,
+          title: 'karthikeya',
+          audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/karthikeya_2_flute_bgm.mp3',
+          artistName: 'Rbh immersive high-fidelity',
+          fileSize: '5.8 MB',
+        };
+      }
+      return t;
+    });
+    setLocalStorage<Track[]>(KEYS.TRACKS, result);
+    return result;
+  },
   setTracks: (tracks: Track[]) => setLocalStorage<Track[]>(KEYS.TRACKS, tracks),
   addTrack: (track: Track) => {
     const tracks = db.getTracks();
@@ -485,7 +460,15 @@ export const db = {
   },
 
   // Albums
-  getAlbums: (): Album[] => getLocalStorage<Album[]>(KEYS.ALBUMS, INITIAL_ALBUMS),
+  getAlbums: (): Album[] => {
+    const stored = getLocalStorage<Album[]>(KEYS.ALBUMS, INITIAL_ALBUMS);
+    const updated = stored.map(a => ({
+      ...a,
+      tracks: ['tr_11'],
+    }));
+    setLocalStorage<Album[]>(KEYS.ALBUMS, updated);
+    return updated;
+  },
   setAlbums: (albums: Album[] = []) => setLocalStorage<Album[]>(KEYS.ALBUMS, albums),
   addAlbum: (album: Album) => {
     const albums = db.getAlbums();
@@ -507,7 +490,23 @@ export const db = {
   },
 
   // Playlists
-  getPlaylists: (): Playlist[] => getLocalStorage<Playlist[]>(KEYS.PLAYLISTS, INITIAL_PLAYLISTS),
+  getPlaylists: (): Playlist[] => {
+    const stored = getLocalStorage<Playlist[]>(KEYS.PLAYLISTS, INITIAL_PLAYLISTS);
+    const filtered = stored.filter(p => !['pl_dm2', 'pl_dm3', 'pl_dm4', 'pl_dm5', 'pl_dm6'].includes(p.id));
+    const updated = filtered.map(p => {
+      if (p.id === 'pl_dm1') {
+        return {
+          ...p,
+          name: 'FAVOURITE MUSIC',
+          description: 'Your curated favourite tracks featuring Meghallo, DARSHANA, anthinthom & karthikeya.',
+          tracks: ['tr_11', 'tr_12', 'tr_13', 'tr_14'],
+        };
+      }
+      return p;
+    });
+    setLocalStorage<Playlist[]>(KEYS.PLAYLISTS, updated);
+    return updated;
+  },
   setPlaylists: (playlists: Playlist[]) => setLocalStorage<Playlist[]>(KEYS.PLAYLISTS, playlists),
   createPlaylist: (playlist: Playlist) => {
     const playlists = db.getPlaylists();
@@ -524,7 +523,9 @@ export const db = {
   },
 
   // Liked / Saved state
-  getFavorites: (): string[] => getLocalStorage<string[]>(KEYS.FAVORITES, ['tr_1', 'tr_4', 'tr_6']), // Track IDs
+  getFavorites: (): string[] => {
+    return ['tr_11'];
+  },
   setFavorites: (favorites: string[]) => setLocalStorage<string[]>(KEYS.FAVORITES, favorites),
   toggleFavorite: (trackId: string): boolean => {
     const favorites = db.getFavorites();
@@ -570,7 +571,7 @@ export const db = {
   },
 
   // Search history
-  getSearchHistory: (): string[] => getLocalStorage<string[]>(KEYS.SEARCH_HISTORY, ['Midnight', 'Acoustic', 'Luna']),
+  getSearchHistory: (): string[] => getLocalStorage<string[]>(KEYS.SEARCH_HISTORY, ['Meghallo']),
   addSearchHistory: (query: string) => {
     const history = db.getSearchHistory().filter(q => q.toLowerCase() !== query.toLowerCase());
     history.unshift(query);
@@ -581,11 +582,7 @@ export const db = {
 
   // Listening History
   getHistory: (): { trackId: string; playedAt: string }[] => 
-    getLocalStorage<{ trackId: string; playedAt: string }[]>(KEYS.HISTORY, [
-      { trackId: 'tr_1', playedAt: '2026-07-21T08:30:00.000Z' },
-      { trackId: 'tr_4', playedAt: '2026-07-21T08:00:00.000Z' },
-      { trackId: 'tr_9', playedAt: '2026-07-20T21:00:00.000Z' },
-    ]),
+    [{ trackId: 'tr_11', playedAt: new Date().toISOString() }],
   addToHistory: (trackId: string) => {
     const history = db.getHistory();
     // Prepend to history

@@ -32,6 +32,7 @@ export const Dashboard: React.FC = () => {
     playlists, 
     playTrack, 
     addToQueue, 
+    addTrackToPlaylist,
     getAiRecommendations,
     showToast,
     navigate
@@ -76,68 +77,28 @@ export const Dashboard: React.FC = () => {
     }
   };
 
-  // Play custom curated selections for the 6 Daily Mixes
-  const playDailyMix = (mixNumber: number) => {
-    let selectedTracks: Track[] = [];
-    if (mixNumber === 1) {
-      selectedTracks = tracks.filter(t => t.genre.toLowerCase() === 'synthwave');
-    } else if (mixNumber === 2) {
-      selectedTracks = tracks.filter(t => t.genre.toLowerCase().includes('lo-fi') || t.genre.toLowerCase().includes('chill'));
-    } else if (mixNumber === 3) {
-      selectedTracks = tracks.filter(t => t.genre.toLowerCase().includes('acoustic') || t.genre.toLowerCase().includes('ambient'));
-    } else if (mixNumber === 4) {
-      selectedTracks = tracks.filter(t => t.genre.toLowerCase().includes('electronic') || t.genre.toLowerCase().includes('house'));
-    } else if (mixNumber === 5) {
-      selectedTracks = tracks.filter(t => t.id === 'tr_1' || t.id === 'tr_3' || t.id === 'tr_9');
-    } else {
-      selectedTracks = tracks.filter(t => t.id === 'tr_4' || t.id === 'tr_5' || t.id === 'tr_7');
+  // Play custom curated selections for FAVOURITE MUSIC
+  const playDailyMix = (mixNumber: number = 1) => {
+    const dmPlaylist = playlists.find(p => p.id === 'pl_dm1');
+    if (dmPlaylist && dmPlaylist.tracks.length > 0) {
+      const dmTracks = dmPlaylist.tracks.map(id => tracks.find(t => t.id === id)).filter(Boolean) as Track[];
+      if (dmTracks.length > 0) {
+        playTrack(dmTracks[0], dmTracks);
+        showToast('Playing FAVOURITE MUSIC', 'success');
+        return;
+      }
     }
-
-    if (selectedTracks.length > 0) {
-      playTrack(selectedTracks[0], selectedTracks);
-      showToast(`Playing Daily Mix ${mixNumber} curations`, 'success');
-    } else {
-      playTrack(tracks[0], tracks);
-      showToast(`Playing Daily Mix ${mixNumber}`, 'success');
-    }
+    playTrack(tracks[0], tracks);
+    showToast('Playing FAVOURITE MUSIC', 'success');
   };
 
-  // Static properties for the 6 Daily Mixes in mockup
+  // Curated FAVOURITE MUSIC playlist card definition
   const dailyMixData = [
     {
       num: 1,
+      name: 'FAVOURITE MUSIC',
       image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=400&q=80',
       bgColor: '#16A34A', // vibrant green
-      textColor: '#FFFFFF'
-    },
-    {
-      num: 2,
-      image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80',
-      bgColor: '#DB2777', // rose/pink
-      textColor: '#FFFFFF'
-    },
-    {
-      num: 3,
-      image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&q=80',
-      bgColor: '#2563EB', // electric blue
-      textColor: '#FFFFFF'
-    },
-    {
-      num: 4,
-      image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80',
-      bgColor: '#FF3B5C', // RBH Red
-      textColor: '#FFFFFF'
-    },
-    {
-      num: 5,
-      image: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&q=80',
-      bgColor: '#CA8A04', // golden yellow
-      textColor: '#FFFFFF'
-    },
-    {
-      num: 6,
-      image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&q=80',
-      bgColor: '#0D9488', // teal
       textColor: '#FFFFFF'
     }
   ];
@@ -258,7 +219,7 @@ export const Dashboard: React.FC = () => {
           {dailyMixData.map(mix => (
             <div
               key={mix.num}
-              onClick={() => playDailyMix(mix.num)}
+              onClick={() => navigate('playlist', { playlistId: `pl_dm${mix.num}` })}
               className="bg-[#181818] hover:bg-[#282828] p-3 rounded-2xl transition-all duration-300 group cursor-pointer text-left flex flex-col border border-solid border-white/5"
               id={`daily-mix-card-${mix.num}`}
             >
@@ -286,73 +247,33 @@ export const Dashboard: React.FC = () => {
                   
                   {/* Text on wave */}
                   <div className="relative z-20">
-                    <h4 className="text-xs font-black tracking-tight text-black">
-                      Daily Mix {mix.num}
+                    <h4 className="text-xs font-black tracking-tight text-black truncate">
+                      {mix.name}
                     </h4>
                   </div>
                 </div>
 
                 {/* Hover Play Button */}
-                <div className="absolute bottom-2 right-2 w-9 h-9 rounded-full bg-[#1DB954] text-black flex items-center justify-center shadow-xl opacity-0 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2 transition-all duration-300 z-30">
+                <div 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    playDailyMix(mix.num);
+                  }}
+                  className="absolute bottom-2 right-2 w-9 h-9 rounded-full bg-[#1DB954] hover:bg-[#1ed760] hover:scale-105 text-black flex items-center justify-center shadow-xl opacity-0 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2 transition-all duration-300 z-30"
+                  title={`Play ${mix.name}`}
+                >
                   <Play className="w-4 h-4 fill-black text-black ml-0.5" />
                 </div>
               </div>
 
               {/* Title and Subtitle below card */}
-              <h4 className="text-xs font-bold text-white truncate">Daily Mix {mix.num}</h4>
-              <p className="text-[10px] text-[#A7A7A7] mt-0.5 truncate">Made for you</p>
+              <h4 className="text-xs font-bold text-white truncate">{mix.name}</h4>
+              <p className="text-[10px] text-[#A7A7A7] mt-0.5 truncate">Click to view playlist</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Recommended Songs (Full track list cards) */}
-      <section className="space-y-4" id="recommended-songs-section">
-        <div className="flex items-end justify-between border-b border-solid border-[#2A2A2A] pb-2">
-          <h3 className="text-lg font-black text-white">Recommended for You</h3>
-          <span className="text-[10px] text-[#B3B3B3]/40 font-bold">Based on your recent flow</span>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
-          {tracks.slice(0, 6).map(tr => (
-            <div
-              key={tr.id}
-              className="flex items-center justify-between p-2.5 bg-[#181818] hover:bg-[#181818]/80 border border-solid border-[#2A2A2A] rounded-xl transition-all group"
-              id={`track-card-${tr.id}`}
-            >
-              <div className="flex items-center gap-3 text-left min-w-0 flex-1">
-                <div className="relative flex-shrink-0">
-                  <img src={tr.coverUrl} alt={tr.title} className="w-11 h-11 rounded-lg object-cover border border-solid border-white/5" />
-                  <button
-                    onClick={() => playTrack(tr, tracks)}
-                    className="absolute inset-0 bg-black/60 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-                  >
-                    <Play className="w-5 h-5 text-[#FF3B5C] fill-[#FF3B5C] ml-0.5" />
-                  </button>
-                </div>
-                <div className="min-w-0">
-                  <h4 className="text-xs font-bold text-white truncate flex items-center gap-1.5">
-                    {tr.title}
-                    {tr.isPremium && <span className="text-[7px] font-black px-1 py-0.5 bg-[#FF3B5C]/20 text-[#FF3B5C] rounded">PRO</span>}
-                  </h4>
-                  <p className="text-[10px] text-[#B3B3B3]/60 truncate mt-0.5">{tr.artistName}</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2.5">
-                <span className="text-[9px] text-[#B3B3B3]/40 font-bold">{Math.floor(tr.duration / 60)}:{(tr.duration % 60) < 10 ? '0' : ''}{tr.duration % 60}</span>
-                <button
-                  onClick={() => addToQueue(tr)}
-                  className="p-1.5 hover:bg-white/5 rounded-lg text-[#B3B3B3]/60 hover:text-[#FF3B5C] transition-colors cursor-pointer"
-                  title="Add to queue"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* Featured Playlists */}
       <section className="space-y-4" id="trending-playlists-section">

@@ -105,7 +105,9 @@ export const LibraryPage: React.FC = () => {
                   >
                     <Heart className="w-4 h-4 fill-rose-500" />
                   </button>
-                  <span className="text-[10px] text-neutral-500 font-bold">{Math.floor(tr.duration / 60)}:{(tr.duration % 60) < 10 ? '0' : ''}{tr.duration % 60}</span>
+                  <span className="text-[10px] text-cyan-400 font-bold bg-cyan-950/40 border border-solid border-cyan-500/20 px-2 py-0.5 rounded">
+                    {Math.floor(tr.duration / 60)} min {(tr.duration % 60) < 10 ? '0' : ''}{tr.duration % 60} sec
+                  </span>
                   <button
                     onClick={() => addToQueue(tr)}
                     className="p-1.5 hover:bg-white/5 rounded-lg text-neutral-500 hover:text-cyan-400 transition-colors"

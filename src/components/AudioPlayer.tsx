@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { 
   Play, Pause, SkipForward, SkipBack, Shuffle, Repeat, 
   Volume2, VolumeX, ListMusic, Clock, Sliders, Maximize2, 
-  Sparkles, QrCode, Heart, Eye, ListCollapse, Volume, CheckCircle
+  Sparkles, QrCode, Heart, Eye, ListCollapse, Volume, CheckCircle, ArrowLeft
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { Visualizer } from './Visualizer';
@@ -67,7 +67,8 @@ export const AudioPlayer: React.FC = () => {
       {/* 1. Main Bottom Sticky Audio Player (Z-Index 40) */}
       <div 
         id="bottom-sticky-player"
-        className="fixed bottom-16 md:bottom-0 left-0 right-0 z-40 bg-[#121212] border-t border-solid border-white/10 px-4 md:px-6 py-2.5 md:py-3 flex items-center justify-between gap-3 h-20 md:h-24 shadow-2xl select-none"
+        onClick={() => setIsFullscreen(true)}
+        className="fixed bottom-16 md:bottom-0 left-0 right-0 z-40 bg-[#121212] border-t border-solid border-white/10 px-4 md:px-6 py-2.5 md:py-3 flex items-center justify-between gap-3 h-20 md:h-24 shadow-2xl select-none cursor-pointer hover:bg-[#181818] transition-colors"
       >
         {/* Track Details (Left Block) */}
         <div className="flex items-center gap-3 w-auto md:w-1/4 max-w-[240px] md:max-w-none min-w-0" id="player-track-info">
@@ -88,7 +89,7 @@ export const AudioPlayer: React.FC = () => {
           </div>
 
           <button
-            onClick={() => toggleLikeTrack(currentTrack.id)}
+            onClick={(e) => { e.stopPropagation(); toggleLikeTrack(currentTrack.id); }}
             className={`p-1.5 hover:scale-105 transition-transform cursor-pointer shrink-0 ml-1 ${isLiked ? 'text-[#1DB954]' : 'text-[#A7A7A7] hover:text-white'}`}
             id="player-like-btn"
             title="Save to Liked Songs"
@@ -102,7 +103,7 @@ export const AudioPlayer: React.FC = () => {
           <div className="flex items-center gap-4 md:gap-6">
             {/* Shuffle */}
             <button
-              onClick={toggleShuffle}
+              onClick={(e) => { e.stopPropagation(); toggleShuffle(); }}
               className={`p-1 hover:scale-105 transition-transform cursor-pointer ${shuffle ? 'text-[#1DB954]' : 'text-[#A7A7A7] hover:text-white'}`}
               id="player-shuffle-btn"
               title="Shuffle"
@@ -112,7 +113,7 @@ export const AudioPlayer: React.FC = () => {
 
             {/* Prev */}
             <button
-              onClick={prevTrack}
+              onClick={(e) => { e.stopPropagation(); prevTrack(); }}
               className="p-1 text-[#A7A7A7] hover:text-white hover:scale-105 transition-transform cursor-pointer"
               id="player-prev-btn"
               title="Previous"
@@ -122,7 +123,7 @@ export const AudioPlayer: React.FC = () => {
 
             {/* Play/Pause */}
             <button
-              onClick={togglePlay}
+              onClick={(e) => { e.stopPropagation(); togglePlay(); }}
               className="w-9 h-9 md:w-10 md:h-10 bg-white hover:scale-105 active:scale-95 text-black rounded-full flex items-center justify-center transition-all cursor-pointer shadow-lg"
               id="player-play-pause-btn"
               title={isPlaying ? 'Pause' : 'Play'}
@@ -132,7 +133,7 @@ export const AudioPlayer: React.FC = () => {
 
             {/* Next */}
             <button
-              onClick={nextTrack}
+              onClick={(e) => { e.stopPropagation(); nextTrack(); }}
               className="p-1 text-[#A7A7A7] hover:text-white hover:scale-105 transition-transform cursor-pointer"
               id="player-next-btn"
               title="Next"
@@ -142,7 +143,7 @@ export const AudioPlayer: React.FC = () => {
 
             {/* Repeat */}
             <button
-              onClick={toggleRepeat}
+              onClick={(e) => { e.stopPropagation(); toggleRepeat(); }}
               className={`p-1 hover:scale-105 transition-transform relative cursor-pointer ${repeat !== 'none' ? 'text-[#1DB954]' : 'text-[#A7A7A7] hover:text-white'}`}
               id="player-repeat-btn"
               title={`Repeat: ${repeat}`}
@@ -153,7 +154,7 @@ export const AudioPlayer: React.FC = () => {
           </div>
 
           {/* Timeline slider */}
-          <div className="hidden sm:flex items-center gap-2.5 w-full mt-1.5" id="player-timeline-slider">
+          <div className="hidden sm:flex items-center gap-2.5 w-full mt-1.5" id="player-timeline-slider" onClick={(e) => e.stopPropagation()}>
             <span className="text-[10px] text-[#A7A7A7] font-semibold w-8 text-right">{formatTime(progress)}</span>
             
             <input
@@ -161,7 +162,8 @@ export const AudioPlayer: React.FC = () => {
               min={0}
               max={duration || 100}
               value={progress}
-              onChange={e => seek(Number(e.target.value))}
+              onChange={e => { e.stopPropagation(); seek(Number(e.target.value)); }}
+              onClick={e => e.stopPropagation()}
               className="flex-1 h-1 bg-white/20 hover:bg-white/30 rounded-lg appearance-none cursor-pointer accent-white outline-none transition-colors"
               id="timeline-input-range"
             />
@@ -173,7 +175,7 @@ export const AudioPlayer: React.FC = () => {
         {/* Utility Controls (Right Block) */}
         <div className="hidden md:flex items-center justify-end w-1/4 gap-3 text-[#A7A7A7]" id="player-utility-controls">
           <button
-            onClick={() => setIsLyricsOpen(true)}
+            onClick={(e) => { e.stopPropagation(); setIsLyricsOpen(true); }}
             className="p-1.5 hover:text-white transition-colors cursor-pointer"
             title="Lyrics"
           >
@@ -181,7 +183,28 @@ export const AudioPlayer: React.FC = () => {
           </button>
 
           <button
-            onClick={() => setIsFullscreen(true)}
+            onClick={(e) => { e.stopPropagation(); setIsSleepOpen(true); }}
+            className={`p-1.5 hover:text-white transition-colors cursor-pointer relative ${sleepTimer !== null ? 'text-[#FF3B5C]' : ''}`}
+            title={sleepTimer !== null ? `Sleep Timer: ${sleepTimer}m remaining` : 'Sleep Timer'}
+          >
+            <Clock className="w-4 h-4" />
+            {sleepTimer !== null && (
+              <span className="absolute -top-1 -right-1 text-[8px] font-black bg-[#FF3B5C] text-white rounded-full w-3.5 h-3.5 flex items-center justify-center">
+                z
+              </span>
+            )}
+          </button>
+
+          <button
+            onClick={(e) => { e.stopPropagation(); setIsEqOpen(true); }}
+            className="p-1.5 hover:text-white transition-colors cursor-pointer"
+            title="Equalizer"
+          >
+            <Sliders className="w-4 h-4" />
+          </button>
+
+          <button
+            onClick={(e) => { e.stopPropagation(); setIsFullscreen(true); }}
             className="p-1.5 hover:text-white transition-colors cursor-pointer"
             title="Fullscreen player"
           >
@@ -189,9 +212,9 @@ export const AudioPlayer: React.FC = () => {
           </button>
 
           {/* Volume control block */}
-          <div className="flex items-center gap-2" id="player-volume-block">
+          <div className="flex items-center gap-2" id="player-volume-block" onClick={(e) => e.stopPropagation()}>
             <button
-              onClick={() => setVolume(volume > 0 ? 0 : 0.8)}
+              onClick={(e) => { e.stopPropagation(); setVolume(volume > 0 ? 0 : 0.8); }}
               className="hover:text-white transition-colors cursor-pointer"
               id="player-volume-mute-btn"
             >
@@ -203,7 +226,8 @@ export const AudioPlayer: React.FC = () => {
               max={1}
               step={0.01}
               value={volume}
-              onChange={e => setVolume(Number(e.target.value))}
+              onChange={e => { e.stopPropagation(); setVolume(Number(e.target.value)); }}
+              onClick={e => e.stopPropagation()}
               className="w-20 h-1 bg-white/20 hover:bg-white/30 rounded-lg appearance-none cursor-pointer accent-white outline-none"
               id="volume-input-range"
             />
@@ -226,17 +250,27 @@ export const AudioPlayer: React.FC = () => {
 
           {/* Header Bar */}
           <div className="flex items-center justify-between border-b border-solid border-white/5 pb-4 z-10" id="theater-header">
+            <button 
+              onClick={() => setIsFullscreen(false)}
+              className="p-2.5 bg-white/5 hover:bg-white/10 active:scale-95 rounded-xl text-white border border-solid border-white/10 transition-all flex items-center justify-center cursor-pointer"
+              id="close-theater-btn"
+              title="Back"
+            >
+              <ArrowLeft className="w-5 h-5 text-white" />
+            </button>
+
             <div className="flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-[#FF3B5C] animate-pulse" />
               <p className="text-xs font-black tracking-widest text-neutral-400">RBH IMMERSIVE HIGH-FIDELITY</p>
             </div>
 
             <button 
-              onClick={() => setIsFullscreen(false)}
-              className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-xs font-bold text-neutral-300 border border-solid border-white/10 transition-colors"
-              id="close-theater-btn"
+              onClick={() => setIsSleepOpen(true)}
+              className={`px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-solid border-white/10 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${sleepTimer !== null ? 'text-[#FF3B5C] border-[#FF3B5C]/30 bg-[#FF3B5C]/10' : 'text-neutral-300'}`}
+              title="Sleep Timer"
             >
-              Exit Theater
+              <Clock className="w-4 h-4" />
+              <span>{sleepTimer !== null ? `${sleepTimer}m` : 'Sleep Timer'}</span>
             </button>
           </div>
 
