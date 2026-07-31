@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Home, Search, Library, Plus, Disc, Award, Settings, User, Download, Heart, Music } from 'lucide-react';
+import { Home, Search, Library, Plus, Disc, Award, Settings, Download, Heart, Music, Mic } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { PlaylistCreateModal } from './Modals';
 
@@ -24,8 +24,8 @@ export const Sidebar: React.FC = () => {
   const mainNav = [
     { id: 'home', label: 'Home', icon: Home },
     { id: 'search', label: 'Search', icon: Search },
+    { id: 'singers', label: 'Singers', icon: Mic },
     { id: 'library', label: 'Your Library', icon: Library },
-    { id: 'profile', label: 'Profile', icon: User },
   ];
 
   const handlePlaylistCreateClick = () => {
@@ -122,7 +122,6 @@ export const Sidebar: React.FC = () => {
                 </div>
                 <div className="min-w-0">
                   <p className="text-xs font-bold text-white group-hover:text-white transition-colors truncate">Liked Songs</p>
-                  <p className="text-[10px] font-medium text-[#A7A7A7] mt-0.5">182 songs</p>
                 </div>
               </button>
 
@@ -174,9 +173,8 @@ export const Sidebar: React.FC = () => {
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-extrabold text-white truncate">{user.username}</p>
                 <span className="flex items-center gap-1 mt-0.5">
-                  <Award className={`w-3 h-3 ${user.subscriptionStatus === 'premium' ? 'text-amber-400' : 'text-white/40'}`} />
                   <span className="text-[9px] uppercase font-bold text-[#A7A7A7]">
-                    {user.subscriptionStatus === 'premium' ? 'RBH Premium' : 'Free Member'}
+                    Member
                   </span>
                 </span>
               </div>

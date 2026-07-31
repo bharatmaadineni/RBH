@@ -142,7 +142,7 @@ export const LandingPage: React.FC = () => {
           })}
         </nav>
 
-        {/* Right Search and Profile Access */}
+        {/* Right Search */}
         <div className="flex items-center gap-4" id="right-navbar-elements">
           {/* Rounded Search Bar */}
           <div className="relative hidden sm:block">
@@ -156,19 +156,6 @@ export const LandingPage: React.FC = () => {
             />
             <Search className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
           </div>
-
-          {/* Profile Avatar Trigger */}
-          <button
-            onClick={() => navigate('auth')}
-            className="w-8 h-8 rounded-full border border-solid border-[#2A2A2A] bg-[#181818] flex items-center justify-center hover:bg-[#222222] transition-all text-white/70 hover:text-white cursor-pointer overflow-hidden"
-            id="avatar-access-btn"
-          >
-            <img 
-              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&q=80" 
-              alt="Default Avatar" 
-              className="w-full h-full object-cover"
-            />
-          </button>
         </div>
       </header>
 

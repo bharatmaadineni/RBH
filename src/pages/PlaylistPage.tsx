@@ -168,7 +168,6 @@ export const PlaylistPage: React.FC = () => {
                   <div className="min-w-0">
                     <p className="text-xs font-bold text-white truncate flex items-center gap-1">
                       {tr.title}
-                      {tr.isPremium && <span className="text-[8px] px-1 bg-yellow-500/20 text-yellow-400 rounded">PRO</span>}
                     </p>
                     <p className="text-[10px] text-neutral-400 truncate mt-0.5">{tr.artistName}</p>
                   </div>

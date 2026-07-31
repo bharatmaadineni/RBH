@@ -71,6 +71,11 @@ interface AppContextType {
   followedArtists: string[];
   refreshMusicDb: () => void;
 
+  // Favorite Singers Modal Onboarding
+  showFavoriteSingersModal: boolean;
+  setShowFavoriteSingersModal: React.Dispatch<React.SetStateAction<boolean>>;
+  batchFollowArtists: (artistIds: string[]) => void;
+
   // Interaction features
   toggleLikeTrack: (trackId: string) => void;
   toggleSaveAlbum: (albumId: string) => void;
@@ -134,6 +139,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Toast
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' | 'error' | 'warning' } | null>(null);
+
+  // Favorite Singers Modal Onboarding
+  const [showFavoriteSingersModal, setShowFavoriteSingersModal] = useState<boolean>(false);
+
+  const batchFollowArtists = (artistIds: string[]) => {
+    const updated = db.addFollowedArtistsBatch(artistIds);
+    setFollowedArtists(updated);
+    showToast(`✨ Added ${artistIds.length} favorite singers to your following list!`, 'success');
+  };
 
   // HTML5 Audio Reference
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -273,8 +287,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     // Sophisticated Crossfade + Ended behavior
     const handleEnded = () => {
       if (repeat === 'one') {
-        audio.currentTime = 0;
-        safePlay();
+        const audio = audioRef.current;
+        if (audio) {
+          audio.currentTime = 0;
+          safePlay();
+        }
       } else {
         nextTrack();
       }
@@ -328,7 +345,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const navigate = (view: string, params: any = null) => {
     // If not logged in, restrict views to auth pages
     const publicViews = ['auth', 'login', 'register'];
-    if (!isLoggedIn && !publicViews.includes(view)) {
+    if (!isLoggedIn && !user && !publicViews.includes(view)) {
       showToast('Please login to explore all music features!', 'warning');
       setActiveView('auth');
       return;
@@ -354,12 +371,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Playback Control Actions
   const playTrack = (track: Track, customQueue?: Track[]) => {
-    if (track.isPremium && (!user || user.subscriptionStatus !== 'premium')) {
-      showToast('⭐️ "Aura Premium" Required to stream high-fidelity track!', 'warning');
-      navigate('profile');
-      return;
-    }
-
     const currentTracksList = customQueue && customQueue.length > 0 ? customQueue : tracks;
     
     // Find index
@@ -423,33 +434,50 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const nextTrack = () => {
-    if (queue.length === 0) return;
+    const currentQueue = queue.length > 0 ? queue : tracks;
+    if (currentQueue.length === 0) return;
 
-    let nextIdx = queueIndex + 1;
+    let nextIdx = -1;
+
     if (shuffle) {
-      nextIdx = Math.floor(Math.random() * queue.length);
-    } else if (nextIdx >= queue.length) {
-      nextIdx = repeat === 'all' ? 0 : queueIndex;
+      if (currentQueue.length > 1) {
+        let rand = Math.floor(Math.random() * currentQueue.length);
+        while (rand === queueIndex) {
+          rand = Math.floor(Math.random() * currentQueue.length);
+        }
+        nextIdx = rand;
+      } else {
+        nextIdx = 0;
+      }
+    } else {
+      const candidate = queueIndex + 1;
+      if (candidate < currentQueue.length) {
+        nextIdx = candidate;
+      } else if (repeat === 'all' || repeat === 'one') {
+        nextIdx = 0;
+      } else {
+        nextIdx = -1;
+      }
     }
 
-    if (nextIdx !== queueIndex && nextIdx < queue.length && nextIdx >= 0) {
-      setQueueIndex(nextIdx);
-      const track = queue[nextIdx];
-      if (track.isPremium && (!user || user.subscriptionStatus !== 'premium')) {
-        // Find next non-premium or skip
-        const nonPremiumIndex = queue.findIndex((t, index) => index > nextIdx && !t.isPremium);
-        if (nonPremiumIndex !== -1) {
-          setQueueIndex(nonPremiumIndex);
-          setCurrentTrack(queue[nonPremiumIndex]);
-          db.addToHistory(queue[nonPremiumIndex].id);
-        } else {
-          showToast('Reached premium songs only queue limits!', 'info');
-          setIsPlaying(false);
+    if (nextIdx !== -1) {
+      if (nextIdx === queueIndex && currentQueue.length === 1) {
+        if (audioRef.current) {
+          audioRef.current.currentTime = 0;
+          safePlay();
         }
-      } else {
-        setCurrentTrack(track);
-        db.addToHistory(track.id);
+        return;
       }
+
+      if (queue.length === 0) {
+        setQueue(tracks);
+      }
+
+      setQueueIndex(nextIdx);
+      const track = currentQueue[nextIdx];
+      setCurrentTrack(track);
+      db.addToHistory(track.id);
+      setIsPlaying(true);
     } else {
       showToast('Queue complete', 'info');
       setIsPlaying(false);
@@ -457,29 +485,42 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const prevTrack = () => {
-    if (queue.length === 0) return;
+    const currentQueue = queue.length > 0 ? queue : tracks;
+    if (currentQueue.length === 0) return;
 
-    let prevIdx = queueIndex - 1;
     if (progress > 5) {
       // Restart current track
       seek(0);
       return;
     }
 
-    if (prevIdx < 0) {
-      prevIdx = repeat === 'all' ? queue.length - 1 : 0;
+    let prevIdx = -1;
+    if (shuffle) {
+      if (currentQueue.length > 1) {
+        let rand = Math.floor(Math.random() * currentQueue.length);
+        while (rand === queueIndex) {
+          rand = Math.floor(Math.random() * currentQueue.length);
+        }
+        prevIdx = rand;
+      } else {
+        prevIdx = 0;
+      }
+    } else {
+      prevIdx = queueIndex - 1;
+      if (prevIdx < 0) {
+        prevIdx = repeat === 'all' || repeat === 'one' ? currentQueue.length - 1 : 0;
+      }
     }
 
-    if (prevIdx !== queueIndex && prevIdx >= 0) {
-      setQueueIndex(prevIdx);
-      const track = queue[prevIdx];
-      if (track.isPremium && (!user || user.subscriptionStatus !== 'premium')) {
-        showToast('⭐️ Aura Premium track skipped', 'warning');
-        nextTrack();
-      } else {
-        setCurrentTrack(track);
-        db.addToHistory(track.id);
+    if (prevIdx >= 0 && prevIdx < currentQueue.length) {
+      if (queue.length === 0) {
+        setQueue(tracks);
       }
+      setQueueIndex(prevIdx);
+      const track = currentQueue[prevIdx];
+      setCurrentTrack(track);
+      db.addToHistory(track.id);
+      setIsPlaying(true);
     }
   };
 
@@ -494,58 +535,58 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const pool = customTracks && customTracks.length > 0 ? customTracks : (queue.length > 0 ? queue : tracks);
     if (pool.length === 0) return;
 
-    // Fisher-Yates shuffle algorithm on total queue songs
-    const shuffledPool = [...pool];
-    for (let i = shuffledPool.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffledPool[i], shuffledPool[j]] = [shuffledPool[j], shuffledPool[i]];
-    }
-
+    // Pick a random track to start
+    const randomIndex = Math.floor(Math.random() * pool.length);
     setShuffle(true);
-    setQueue(shuffledPool);
-    setQueueIndex(0);
+    setQueue(pool);
+    setQueueIndex(randomIndex);
 
-    const firstTrack = shuffledPool[0];
-    if (firstTrack.isPremium && (!user || user.subscriptionStatus !== 'premium')) {
-      const nonPrem = shuffledPool.find(t => !t.isPremium);
-      if (nonPrem) {
-        const nonPremIdx = shuffledPool.findIndex(t => t.id === nonPrem.id);
-        setQueueIndex(nonPremIdx);
-        setCurrentTrack(nonPrem);
-        db.addToHistory(nonPrem.id);
-      } else {
-        showToast('⭐️ Aura Premium required for these tracks', 'warning');
-        return;
-      }
-    } else {
-      setCurrentTrack(firstTrack);
-      db.addToHistory(firstTrack.id);
-    }
+    const randomTrack = pool[randomIndex];
+    setCurrentTrack(randomTrack);
+    db.addToHistory(randomTrack.id);
 
     setIsPlaying(true);
     safePlay();
-    showToast(`Shuffled & automatically playing ${shuffledPool.length} queue songs!`, 'success');
+    showToast(`Shuffled: Automatically playing random song "${randomTrack.title}"! 🔀`, 'success');
   };
 
   const toggleShuffle = () => {
     if (!shuffle) {
-      shufflePlay();
+      setShuffle(true);
+      const pool = queue.length > 0 ? queue : tracks;
+      if (pool.length > 0) {
+        const randomIndex = Math.floor(Math.random() * pool.length);
+        if (queue.length === 0) {
+          setQueue(pool);
+        }
+        setQueueIndex(randomIndex);
+        const randomTrack = pool[randomIndex];
+        setCurrentTrack(randomTrack);
+        db.addToHistory(randomTrack.id);
+        setIsPlaying(true);
+        safePlay();
+        showToast(`Shuffle Mode ON: Automatically playing "${randomTrack.title}" 🔀`, 'success');
+      } else {
+        showToast('Shuffle Mode ON 🔀', 'info');
+      }
     } else {
       setShuffle(false);
-      showToast('Shuffle Off', 'info');
+      showToast('Shuffle Mode OFF 🛑', 'info');
     }
   };
 
   const toggleRepeat = () => {
     setRepeat(prev => {
-      const map: Record<'none' | 'one' | 'all', 'none' | 'one' | 'all'> = {
-        none: 'all',
-        all: 'one',
-        one: 'none'
-      };
-      const next = map[prev];
-      showToast(`Repeat mode: ${next.toUpperCase()}`, 'info');
-      return next;
+      if (prev === 'none') {
+        showToast('Repeat Current Song: ON 🔂', 'success');
+        return 'one';
+      } else if (prev === 'one') {
+        showToast('Repeat All Tracks: ON 🔁', 'info');
+        return 'all';
+      } else {
+        showToast('Repeat: OFF 🛑', 'info');
+        return 'none';
+      }
     });
   };
 
@@ -641,7 +682,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setUser(updatedUser);
     setIsLoggedIn(true);
     showToast('Welcome back, ' + updatedUser.username + '!', 'success');
-    navigate('home');
+    setActiveView('singers');
+    setShowFavoriteSingersModal(true);
   };
 
   const skipGuest = () => {
@@ -695,7 +737,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setUser(newUser);
     setIsLoggedIn(true);
     showToast(`Account created! Welcome, ${username}!`, 'success');
-    navigate('home');
+    setActiveView('singers');
+    setShowFavoriteSingersModal(true);
   };
 
   const upgradeSubscription = (plan: 'premium' | 'free') => {
@@ -940,6 +983,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         savedAlbums,
         followedArtists,
         refreshMusicDb,
+        showFavoriteSingersModal,
+        setShowFavoriteSingersModal,
+        batchFollowArtists,
         toggleLikeTrack,
         toggleSaveAlbum,
         toggleFollowArtist,

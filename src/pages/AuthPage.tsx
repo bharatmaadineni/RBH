@@ -285,23 +285,16 @@ export const AuthPage: React.FC = () => {
             </button>
 
             {/* Toggle login vs register links */}
-            <div className="text-center text-xs mt-4">
-              {mode === 'login' ? (
-                <p className="text-white/40">
-                  New to the network?{' '}
-                  <button onClick={() => setMode('register')} className="text-[#00D2FF] hover:underline font-bold cursor-pointer bg-transparent border-none">
-                    Create your account
-                  </button>
-                </p>
-              ) : (
+            {mode === 'register' && (
+              <div className="text-center text-xs mt-4">
                 <p className="text-white/40">
                   Already have a portal?{' '}
                   <button onClick={() => setMode('login')} className="text-[#00D2FF] hover:underline font-bold cursor-pointer bg-transparent border-none">
                     Login
                   </button>
                 </p>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         )}
       </motion.div>

@@ -30,6 +30,8 @@ export const Dashboard: React.FC = () => {
     albums, 
     artists, 
     playlists, 
+    followedArtists,
+    toggleFollowArtist,
     playTrack, 
     addToQueue, 
     addTrackToPlaylist,
@@ -152,7 +154,6 @@ export const Dashboard: React.FC = () => {
               </div>
               <div className="min-w-0">
                 <h4 className="text-xs font-extrabold text-white truncate">Liked Songs</h4>
-                <p className="text-[10px] text-[#A7A7A7] mt-0.5 truncate">182 songs</p>
               </div>
             </div>
 
@@ -312,27 +313,59 @@ export const Dashboard: React.FC = () => {
         </div>
       </section>
 
-      {/* Featured Artists */}
-      <section className="space-y-4" id="favorite-artists-section">
+      {/* Top Telugu & Tamil Singers */}
+      <section className="space-y-4" id="top-telugu-tamil-singers-section">
         <div className="flex items-end justify-between border-b border-solid border-[#2A2A2A] pb-2">
-          <h3 className="text-lg font-black text-white">Roster Artists</h3>
+          <div>
+            <h3 className="text-lg font-black text-white">Top Telugu & Tamil Singers</h3>
+            <p className="text-xs text-[#A7A7A7] mt-0.5">Popular South Indian playback vocalists & composers</p>
+          </div>
+          <button 
+            onClick={() => navigate('singers')} 
+            className="text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors cursor-pointer"
+          >
+            Explore All Singers
+          </button>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {artists.map(art => (
-            <div
-              key={art.id}
-              className="text-center group p-4 bg-[#181818] rounded-2xl hover:bg-[#181818]/80 border border-solid border-transparent hover:border-[#FF3B5C]/20 transition-all cursor-pointer"
-              id={`artist-circle-card-${art.id}`}
-            >
-              <img src={art.avatarUrl} alt={art.name} className="w-24 h-24 rounded-full object-cover mx-auto mb-3 border border-solid border-[#2A2A2A] group-hover:scale-105 transition-transform" />
-              <h4 className="font-bold text-xs text-white">{art.name}</h4>
-              <p className="text-[9px] text-[#FF3B5C] mt-1 uppercase font-extrabold tracking-wider truncate">{art.genres.join(', ')}</p>
-            </div>
-          ))}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          {artists.map(art => {
+            const isFollowing = followedArtists.includes(art.id);
+            return (
+              <div
+                key={art.id}
+                className="group p-4 bg-[#181818] rounded-2xl text-center border border-solid border-[#2A2A2A] hover:border-cyan-500/30 hover:bg-[#181818]/90 transition-all flex flex-col items-center justify-between"
+                id={`telugu-tamil-singer-card-${art.id}`}
+              >
+                <div 
+                  onClick={() => navigate('singers')}
+                  className="w-20 h-20 rounded-full overflow-hidden mb-3 cursor-pointer border-2 border-solid border-white/10 group-hover:border-cyan-400 group-hover:scale-105 transition-all shadow-md relative"
+                  title={`View singer ${art.name}`}
+                >
+                  <img src={art.avatarUrl} alt={art.name} className="w-full h-full object-cover" />
+                </div>
+                <div className="w-full text-center">
+                  <p className="text-xs font-black text-white truncate w-full" title={art.name}>{art.name}</p>
+                  <p className="text-[9px] text-cyan-400/90 font-bold mt-0.5 truncate w-full">{art.genres[0]}</p>
+                  <p className="text-[9px] text-[#A7A7A7] mt-0.5">{(art.followers / 1000000).toFixed(1)}M Followers</p>
+                </div>
+                <button
+                  onClick={() => toggleFollowArtist(art.id)}
+                  className={`mt-3 px-3 py-1.5 text-[10px] font-black rounded-xl transition-all w-full cursor-pointer ${
+                    isFollowing
+                      ? 'bg-cyan-500/10 border border-solid border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/20'
+                      : 'bg-white/10 border border-solid border-white/20 text-white hover:bg-cyan-500 hover:text-black hover:border-cyan-500'
+                  }`}
+                >
+                  {isFollowing ? 'Following' : 'Follow'}
+                </button>
+              </div>
+            );
+          })}
         </div>
       </section>
 
+      {/* Playlists section ends */}
     </div>
   );
 };

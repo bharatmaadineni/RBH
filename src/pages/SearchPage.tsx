@@ -19,6 +19,8 @@ export const SearchPage: React.FC = () => {
     addToQueue, 
     favorites, 
     toggleLikeTrack,
+    followedArtists,
+    toggleFollowArtist,
     activeParams
   } = useApp();
 
@@ -135,7 +137,6 @@ export const SearchPage: React.FC = () => {
                         <div className="min-w-0">
                           <p className="text-xs font-bold text-white truncate flex items-center gap-1">
                             {tr.title}
-                            {tr.isPremium && <span className="text-[8px] px-1 bg-yellow-500/20 text-yellow-400 rounded">PRO</span>}
                           </p>
                           <p className="text-[10px] text-neutral-400 truncate mt-0.5">{tr.artistName}</p>
                         </div>
@@ -198,16 +199,29 @@ export const SearchPage: React.FC = () => {
             <section className="space-y-3">
               <h3 className="text-sm font-extrabold uppercase tracking-widest text-neutral-400">Artists Matches</h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                {filteredArtists.map(art => (
-                  <div
-                    key={art.id}
-                    className="p-4 bg-neutral-900/30 rounded-2xl text-center border border-solid border-transparent hover:border-white/5 hover:bg-white/5 transition-all cursor-pointer"
-                  >
-                    <img src={art.avatarUrl} alt={art.name} className="w-16 h-16 rounded-full object-cover mx-auto mb-3" />
-                    <p className="text-xs font-bold text-white truncate">{art.name}</p>
-                    <p className="text-[9px] text-neutral-500 mt-0.5 uppercase tracking-wider">{art.genres[0]}</p>
-                  </div>
-                ))}
+                {filteredArtists.map(art => {
+                  const isFollowing = followedArtists.includes(art.id);
+                  return (
+                    <div
+                      key={art.id}
+                      className="p-4 bg-neutral-900/30 rounded-2xl text-center border border-solid border-transparent hover:border-white/5 hover:bg-white/5 transition-all"
+                    >
+                      <img src={art.avatarUrl} alt={art.name} className="w-16 h-16 rounded-full object-cover mx-auto mb-3 border border-solid border-white/10" />
+                      <p className="text-xs font-bold text-white truncate">{art.name}</p>
+                      <p className="text-[9px] text-neutral-500 mt-0.5 uppercase tracking-wider">{art.genres[0]}</p>
+                      <button
+                        onClick={() => toggleFollowArtist(art.id)}
+                        className={`mt-3 px-3 py-1 text-[10px] font-black rounded-lg transition-colors w-full cursor-pointer ${
+                          isFollowing 
+                            ? 'bg-cyan-500/10 border border-solid border-cyan-500/20 text-cyan-400 hover:bg-cyan-500/20' 
+                            : 'bg-white/10 border border-solid border-white/20 text-white hover:bg-white/20'
+                        }`}
+                      >
+                        {isFollowing ? 'Following' : 'Follow'}
+                      </button>
+                    </div>
+                  );
+                })}
               </div>
             </section>
           )}
@@ -249,7 +263,7 @@ export const SearchPage: React.FC = () => {
         <div className="space-y-6" id="genre-explorer-panel">
           <div className="flex items-center justify-between border-b border-solid border-white/5 pb-2">
             <h3 className="text-lg font-black text-white font-serif">Explore Music Genres</h3>
-            <span className="text-[10px] text-neutral-400 font-bold">12 premium acoustic nodes</span>
+            <span className="text-[10px] text-neutral-400 font-bold">12 acoustic genres</span>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">

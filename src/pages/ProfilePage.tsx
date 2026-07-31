@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Award, Zap, Edit2, BarChart3, Clock, Image as ImageIcon, Upload, Plus, Trash2, Maximize2, CheckCircle2, UserCheck, X, Sparkles, Camera, Heart, Check, Music } from 'lucide-react';
+import { Award, Zap, Edit2, Clock, Image as ImageIcon, Upload, Plus, Trash2, Maximize2, CheckCircle2, UserCheck, X, Sparkles, Camera, Heart, Check, Music } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 interface GalleryItem {
@@ -73,7 +73,6 @@ export const ProfilePage: React.FC = () => {
   const { 
     user, 
     updateUserProfile, 
-    upgradeSubscription, 
     getStats,
     showToast
   } = useApp();
@@ -109,7 +108,6 @@ export const ProfilePage: React.FC = () => {
 
   // Load listening stats
   const stats = getStats();
-  const maxWeeklyMins = Math.max(...stats.weeklyMinutes, 1);
 
   const handleProfileSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,13 +119,6 @@ export const ProfilePage: React.FC = () => {
     localStorage.setItem('rbh_user_bio', bio.trim());
     localStorage.setItem('rbh_user_genre', favoriteGenre);
     setIsEditing(false);
-  };
-
-  const handleSubToggle = () => {
-    if (!user) return;
-    const current = user.subscriptionStatus;
-    const target = current === 'premium' ? 'free' : 'premium';
-    upgradeSubscription(target);
   };
 
   // Upload local file image
@@ -242,13 +233,9 @@ export const ProfilePage: React.FC = () => {
                 </p>
 
                 <div className="flex flex-wrap items-center gap-2 mt-3 justify-center sm:justify-start">
-                  <span className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border border-solid ${
-                    user?.subscriptionStatus === 'premium' 
-                      ? 'bg-amber-500/10 border-amber-500/30 text-amber-400' 
-                      : 'bg-white/5 border-white/10 text-neutral-400'
-                  }`}>
+                  <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border border-solid bg-white/5 border-white/10 text-neutral-400">
                     <Award className="w-3.5 h-3.5" />
-                    <span>{user?.subscriptionStatus === 'premium' ? 'VIP Premium Listener' : 'Free Standard Listener'}</span>
+                    <span>Music Member</span>
                   </span>
 
                   <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold text-cyan-400 bg-cyan-500/10 border border-cyan-500/20">
@@ -468,62 +455,8 @@ export const ProfilePage: React.FC = () => {
         )}
       </div>
 
-      {/* 3. Interactive Subscription Control card */}
-      <div className="p-6 bg-gradient-to-br from-violet-950/20 to-neutral-900 border border-solid border-violet-500/20 rounded-3xl" id="subscription-control-card">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="text-left space-y-2 max-w-xl">
-            <h3 className="text-lg font-black text-white flex items-center gap-1.5">
-              <Zap className="w-5 h-5 text-yellow-400 fill-yellow-400 animate-pulse" />
-              <span>Subscription Desk</span>
-            </h3>
-            <p className="text-xs text-neutral-400 leading-relaxed">
-              Toggle your subscription status below to experience standard sandbox boundaries or unlock pristine VIP pro tracks, real-time scrolling lyrics, and intelligent voice command routing.
-            </p>
-          </div>
-
-          <button
-            onClick={handleSubToggle}
-            className={`px-6 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
-              user?.subscriptionStatus === 'premium'
-                ? 'bg-rose-500/10 hover:bg-rose-500/20 border border-solid border-rose-500/30 text-rose-400'
-                : 'bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 text-black shadow-[0_4px_16px_rgba(245,158,11,0.25)]'
-            }`}
-            id="sub-desk-toggle"
-          >
-            {user?.subscriptionStatus === 'premium' ? 'Downgrade to Standard' : 'Activate Free Premium'}
-          </button>
-        </div>
-      </div>
-
       {/* 4. Immersive Listening Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6" id="stats-dashboard-row">
-        
-        {/* Weekly listening time bar charts */}
-        <div className="md:col-span-2 p-6 bg-neutral-900/50 border border-solid border-white/5 rounded-2xl" id="stats-weekly-chart">
-          <div className="flex items-center gap-2 mb-6">
-            <BarChart3 className="w-4.5 h-4.5 text-[#E50914]" />
-            <h4 className="text-xs font-extrabold uppercase tracking-widest text-neutral-300">Acoustic Activity (Minutes)</h4>
-          </div>
-
-          <div className="flex items-end justify-between h-40 gap-4 mt-8 px-4" id="visual-stats-grid">
-            {stats.weeklyMinutes.map((mins, idx) => {
-              const barHeightPercentage = (mins / maxWeeklyMins) * 100;
-              return (
-                <div key={idx} className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
-                  <div className="text-[9px] font-bold text-neutral-400">{mins}m</div>
-                  <div className="w-full relative group h-full flex items-end">
-                    <div 
-                      className="w-full bg-gradient-to-t from-[#E50914] to-violet-500 rounded-lg group-hover:brightness-110 transition-all duration-300"
-                      style={{ height: `${barHeightPercentage}%` }}
-                    />
-                  </div>
-                  <div className="text-[10px] font-black text-neutral-500 uppercase tracking-wider">{weekdays[idx]}</div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
+      <div className="grid grid-cols-1 gap-6" id="stats-dashboard-row">
         {/* Favorite genres breakdown */}
         <div className="p-6 bg-neutral-900/50 border border-solid border-white/5 rounded-2xl text-left" id="stats-genres-pie">
           <div className="flex items-center gap-2 mb-6">
@@ -531,17 +464,17 @@ export const ProfilePage: React.FC = () => {
             <h4 className="text-xs font-extrabold uppercase tracking-widest text-neutral-300">Wavelength Genres</h4>
           </div>
 
-          <div className="space-y-4" id="stats-genre-percent-list">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" id="stats-genre-percent-list">
             {stats.topGenres.map((g, idx) => {
               const colors = ['bg-[#E50914]', 'bg-violet-500', 'bg-pink-500', 'bg-amber-400'];
               const color = colors[idx % colors.length];
               return (
-                <div key={idx} className="space-y-1.5" id={`percent-card-${idx}`}>
+                <div key={idx} className="space-y-1.5 p-3 bg-white/5 rounded-xl" id={`percent-card-${idx}`}>
                   <div className="flex items-center justify-between text-xs font-bold">
                     <span className="text-neutral-300">{g.name}</span>
-                    <span className="text-neutral-500">{g.percentage}%</span>
+                    <span className="text-neutral-400">{g.percentage}%</span>
                   </div>
-                  <div className="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
+                  <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
                     <div className={`${color} h-full rounded-full`} style={{ width: `${g.percentage}%` }} />
                   </div>
                 </div>
@@ -549,7 +482,6 @@ export const ProfilePage: React.FC = () => {
             })}
           </div>
         </div>
-
       </div>
 
       {/* MODAL: Add New Photo */}

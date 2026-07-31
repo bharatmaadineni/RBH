@@ -20,9 +20,11 @@ import { LibraryPage } from './pages/LibraryPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { PlaylistPage } from './pages/PlaylistPage';
 import { AdminPanel } from './pages/AdminPanel';
+import { SingersPage } from './pages/SingersPage';
+import { FavoriteSingersModal } from './components/FavoriteSingersModal';
 
 const AuraAppContent: React.FC = () => {
-  const { activeView, user, upgradeSubscription } = useApp();
+  const { activeView, user } = useApp();
   const [showSplash, setShowSplash] = useState<boolean>(true);
 
   return (
@@ -49,21 +51,7 @@ const AuraAppContent: React.FC = () => {
           <div className="absolute top-[-10%] left-[-5%] w-[400px] h-[400px] bg-[#FF3B5C] rounded-full blur-[140px] opacity-20 pointer-events-none z-0"></div>
           <div className="absolute bottom-[10%] right-[-5%] w-[500px] h-[500px] bg-[#FF6B81] rounded-full blur-[160px] opacity-15 pointer-events-none z-0"></div>
 
-          {/* Promotional Top Upgrade Ribbon */}
-          {user?.subscriptionStatus !== 'premium' && (
-            <div 
-              id="pro-promotion-ribbon"
-              className="bg-gradient-to-r from-[#FF6B81]/20 via-[#FF3B5C]/20 to-[#FF6B81]/20 py-1.5 px-4 text-center text-[10px] font-black uppercase tracking-widest text-[#F5F5F5] flex items-center justify-center gap-2 border-b border-solid border-white/10 relative z-40 backdrop-blur-md"
-            >
-              <span>⭐️ Unlock synchronized scrolling AI lyrics, audio equalizers and pristine Hi-Fi audio formats!</span>
-              <button 
-                onClick={() => upgradeSubscription('premium')} 
-                className="px-2.5 py-0.5 bg-[#FF3B5C] hover:bg-[#FF3B5C]/80 text-white rounded font-black text-[9px] transition-all cursor-pointer"
-              >
-                Activate Free Trial
-              </button>
-            </div>
-          )}
+
 
           {/* Main split dashboard view */}
           <div className="flex-1 flex overflow-hidden relative z-10" id="workspace-grid-split">
@@ -76,9 +64,10 @@ const AuraAppContent: React.FC = () => {
               <Navbar />
 
               {/* Central router viewport */}
-              <main className="flex-1 overflow-hidden relative" id="router-viewport-outlet">
+              <main className="flex-1 overflow-y-auto relative" id="router-viewport-outlet">
                 {activeView === 'home' && <Dashboard />}
                 {activeView === 'search' && <SearchPage />}
+                {activeView === 'singers' && <SingersPage />}
                 {activeView === 'library' && <LibraryPage />}
                 {activeView === 'profile' && <ProfilePage />}
                 {activeView === 'playlist' && <PlaylistPage />}
@@ -92,6 +81,9 @@ const AuraAppContent: React.FC = () => {
 
           {/* Bottom sticky audio control center */}
           <AudioPlayer />
+
+          {/* Onboarding favorite singers modal */}
+          <FavoriteSingersModal />
 
           {/* Dynamic globally broadcasted toasts notifications */}
           <Toast />

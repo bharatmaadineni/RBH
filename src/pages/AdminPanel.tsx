@@ -29,7 +29,6 @@ export const AdminPanel: React.FC = () => {
   const [duration, setDuration] = useState(240);
   const [audioUrl, setAudioUrl] = useState('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
   const [coverUrl, setCoverUrl] = useState('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80');
-  const [isPremium, setIsPremium] = useState(false);
 
   const handleUploadTrack = (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +50,7 @@ export const AdminPanel: React.FC = () => {
       genre,
       playCount: 1500,
       likes: 25,
-      isPremium,
+      isPremium: false,
     };
 
     const updated = [...tracks, newTrack];
@@ -207,16 +206,7 @@ export const AdminPanel: React.FC = () => {
               />
             </div>
 
-            <div className="flex items-center gap-2.5 pt-2">
-              <input
-                type="checkbox"
-                id="is-pro-premium-input"
-                checked={isPremium}
-                onChange={e => setIsPremium(e.target.checked)}
-                className="w-4 h-4 rounded text-cyan-400 bg-neutral-900 border border-solid border-white/15 outline-none focus:ring-0 focus:ring-offset-0"
-              />
-              <label htmlFor="is-pro-premium-input" className="text-xs font-bold text-neutral-200">Require VIP Premium License ⭐️</label>
-            </div>
+
 
             <button
               type="submit"
@@ -244,7 +234,6 @@ export const AdminPanel: React.FC = () => {
                     <div className="min-w-0">
                       <p className="text-xs font-bold text-white truncate flex items-center gap-1.5">
                         {tr.title}
-                        {tr.isPremium && <span className="text-[8px] bg-yellow-500/20 text-yellow-400 px-1 rounded">PRO</span>}
                       </p>
                       <p className="text-[10px] text-neutral-400 truncate mt-0.5">{tr.artistName}</p>
                     </div>

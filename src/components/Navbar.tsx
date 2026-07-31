@@ -4,9 +4,8 @@
  */
 
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Mic, Search, Zap, LogIn, LogOut, Sparkles, Bell, ChevronDown, Music } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Mic, Search, Zap, LogIn, LogOut, Sparkles, Bell, Music, Menu, Settings } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import { StripePremiumModal } from './Modals';
 
 export const Navbar: React.FC = () => {
   const { 
@@ -21,9 +20,9 @@ export const Navbar: React.FC = () => {
     showToast
   } = useApp();
 
-  const [isStripeOpen, setIsStripeOpen] = useState(false);
   const [isVoiceOpen, setIsVoiceOpen] = useState(false);
   const [voiceQuery, setVoiceQuery] = useState('');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleVoiceSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,18 +94,8 @@ export const Navbar: React.FC = () => {
           )}
         </div>
 
-        {/* Right side controls: Explore Premium, Bell Notification, Profile Avatar */}
+        {/* Right side controls: Bell Notification, Three-bar Menu */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Explore Premium Pill Button */}
-          {(!user || user.subscriptionStatus !== 'premium') && (
-            <button
-              onClick={() => setIsStripeOpen(true)}
-              className="px-3.5 py-1.5 border border-solid border-white/30 hover:border-white rounded-full text-xs font-extrabold text-white bg-transparent transition-all hover:scale-105 cursor-pointer"
-              id="upgrade-nav-btn"
-            >
-              Explore Premium
-            </button>
-          )}
 
           {/* Notification Bell Button */}
           <button 
@@ -118,42 +107,79 @@ export const Navbar: React.FC = () => {
             <Bell className="w-4 h-4 text-white" />
           </button>
 
-          {/* Profile Avatar trigger with dropdown */}
-          {isLoggedIn && user ? (
-            <div className="flex items-center gap-1">
-              <div 
-                onClick={() => navigate('profile')}
-                className="flex items-center gap-1.5 p-0.5 bg-black/60 hover:bg-black/90 rounded-full border border-solid border-white/10 cursor-pointer transition-all pr-1.5"
-                id="user-profile-trigger"
-              >
-                <img src={user.avatarUrl} alt={user.username} className="w-7 h-7 rounded-full object-cover" />
-                <ChevronDown className="w-3.5 h-3.5 text-white/70" />
-              </div>
-
-              {/* Logout Button */}
-              <button
-                onClick={logout}
-                className="w-8 h-8 rounded-full bg-black/60 hover:bg-rose-500/20 text-white/70 hover:text-rose-400 flex items-center justify-center transition-colors cursor-pointer ml-1"
-                id="logout-nav-btn"
-                title="Logout"
-              >
-                <LogOut className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          ) : (
+          {/* Three Bar Lines Menu Option */}
+          <div className="relative">
             <button
-              onClick={() => navigate('auth')}
-              className="px-4 py-1.5 bg-[#E50914] hover:bg-[#E50914]/90 text-white font-bold text-xs rounded-full transition-all shadow-md cursor-pointer"
-              id="login-nav-btn"
+              onClick={() => setIsMenuOpen(prev => !prev)}
+              className={`w-8 h-8 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center transition-all cursor-pointer border border-solid ${
+                isMenuOpen ? 'border-[#E50914] text-[#E50914]' : 'border-white/10 hover:border-white/30'
+              }`}
+              id="top-menu-bar-btn"
+              title="Menu Options"
             >
-              Sign In
+              <Menu className="w-4 h-4 text-white" />
             </button>
-          )}
+
+            {/* Dropdown menu showing Settings and Logout options */}
+            {isMenuOpen && (
+              <>
+                {/* Backdrop to close menu when clicking outside */}
+                <div 
+                  className="fixed inset-0 z-40" 
+                  onClick={() => setIsMenuOpen(false)} 
+                />
+
+                <div 
+                  className="absolute right-0 mt-2 w-44 bg-[#181818] border border-solid border-white/10 rounded-xl shadow-2xl py-2 z-50 text-left"
+                  id="top-right-dropdown-menu"
+                >
+                  <div className="px-3 py-1.5 border-b border-solid border-white/5 mb-1">
+                    <p className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-400">Options</p>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      navigate('profile');
+                    }}
+                    className="w-full px-3.5 py-2 flex items-center gap-2.5 text-xs font-bold text-white/90 hover:text-white hover:bg-white/10 transition-colors text-left cursor-pointer"
+                    id="menu-settings-btn"
+                  >
+                    <Settings className="w-4 h-4 text-cyan-400" />
+                    <span>Settings</span>
+                  </button>
+
+                  {isLoggedIn ? (
+                    <button
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        logout();
+                      }}
+                      className="w-full px-3.5 py-2 flex items-center gap-2.5 text-xs font-bold text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition-colors text-left cursor-pointer"
+                      id="menu-logout-btn"
+                    >
+                      <LogOut className="w-4 h-4 text-rose-400" />
+                      <span>Logout</span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        navigate('auth');
+                      }}
+                      className="w-full px-3.5 py-2 flex items-center gap-2.5 text-xs font-bold text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 transition-colors text-left cursor-pointer"
+                      id="menu-login-btn"
+                    >
+                      <LogIn className="w-4 h-4 text-emerald-400" />
+                      <span>Sign In</span>
+                    </button>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </header>
-
-      {/* Premium Stripe Upgrade Modal */}
-      <StripePremiumModal isOpen={isStripeOpen} onClose={() => setIsStripeOpen(false)} />
 
       {/* Voice Assistant Speech-Command overlay */}
       {isVoiceOpen && (
