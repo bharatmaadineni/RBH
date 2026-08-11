@@ -22,6 +22,7 @@ import { PlaylistPage } from './pages/PlaylistPage';
 import { AdminPanel } from './pages/AdminPanel';
 import { SingersPage } from './pages/SingersPage';
 import { FavoriteSingersModal } from './components/FavoriteSingersModal';
+import { DjRemixStudio } from './components/DjRemixStudio';
 
 const AuraAppContent: React.FC = () => {
   const { activeView, user } = useApp();
@@ -68,6 +69,7 @@ const AuraAppContent: React.FC = () => {
                 {activeView === 'home' && <Dashboard />}
                 {activeView === 'search' && <SearchPage />}
                 {activeView === 'singers' && <SingersPage />}
+                {activeView === 'dj' && <DjRemixStudio />}
                 {activeView === 'library' && <LibraryPage />}
                 {activeView === 'profile' && <ProfilePage />}
                 {activeView === 'playlist' && <PlaylistPage />}

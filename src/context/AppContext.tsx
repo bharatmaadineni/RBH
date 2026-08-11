@@ -26,7 +26,8 @@ interface AppContextType {
   duration: number;
   shuffle: boolean;
   repeat: 'none' | 'one' | 'all';
-  equalizer: 'flat' | 'bass' | 'treble' | 'electronic' | 'vocal' | 'chill';
+  equalizer: 'flat' | 'bass' | 'fullbass' | 'treble' | 'electronic' | 'vocal' | 'chill';
+  isFullBass: boolean;
   crossfade: boolean;
   sleepTimer: number | null; // minutes remaining
 
@@ -40,7 +41,8 @@ interface AppContextType {
   toggleShuffle: () => void;
   shufflePlay: (customTracks?: Track[]) => void;
   toggleRepeat: () => void;
-  setEqualizer: (mode: 'flat' | 'bass' | 'treble' | 'electronic' | 'vocal' | 'chill') => void;
+  setEqualizer: (mode: 'flat' | 'bass' | 'fullbass' | 'treble' | 'electronic' | 'vocal' | 'chill') => void;
+  toggleFullBass: () => void;
   setCrossfade: (enabled: boolean) => void;
   setSleepTimer: (minutes: number | null) => void;
   addToQueue: (track: Track) => void;
@@ -117,7 +119,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [duration, setDuration] = useState<number>(0);
   const [shuffle, setShuffle] = useState<boolean>(false);
   const [repeat, setRepeat] = useState<'none' | 'one' | 'all'>('none');
-  const [equalizer, _setEqualizer] = useState<'flat' | 'bass' | 'treble' | 'electronic' | 'vocal' | 'chill'>('flat');
+  const [equalizer, _setEqualizer] = useState<'flat' | 'bass' | 'fullbass' | 'treble' | 'electronic' | 'vocal' | 'chill'>('flat');
+  const [isFullBass, setIsFullBass] = useState<boolean>(false);
   const [crossfade, setCrossfadeState] = useState<boolean>(true);
   const [sleepTimer, _setSleepTimer] = useState<number | null>(null);
 
@@ -246,11 +249,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
   }, []);
 
-  // Sync volume
+  // Sync volume natively to HTML5 audio element
   const setVolume = (vol: number) => {
-    _setVolume(vol);
+    const clampedVol = Math.max(0, Math.min(2.5, vol));
+    _setVolume(clampedVol);
+
     if (audioRef.current) {
-      audioRef.current.volume = vol;
+      // Set native audio volume (clamped 0 to 1.0 for HTML5 audio)
+      audioRef.current.volume = Math.max(0, Math.min(1.0, clampedVol));
+      audioRef.current.muted = false;
+    }
+
+    if (clampedVol > 1.0) {
+      const pct = Math.round(clampedVol * 100);
+      if (pct === 250) {
+        showToast(`🔥 250% MAXIMUM VOLUME BOOST ACTIVATED!`, 'warning');
+      }
     }
   };
 
@@ -590,9 +604,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     });
   };
 
-  const setEqualizer = (mode: 'flat' | 'bass' | 'treble' | 'electronic' | 'vocal' | 'chill') => {
+  const toggleFullBass = () => {
+    setIsFullBass(prev => {
+      const next = !prev;
+      if (next) {
+        _setEqualizer('fullbass');
+        showToast('🔥 FULL BASS VERSION ACTIVATED! (+18dB Subwoofer Boost)', 'success');
+      } else {
+        _setEqualizer('flat');
+        showToast('Full Bass Version Deactivated', 'info');
+      }
+      return next;
+    });
+  };
+
+  const setEqualizer = (mode: 'flat' | 'bass' | 'fullbass' | 'treble' | 'electronic' | 'vocal' | 'chill') => {
     _setEqualizer(mode);
-    showToast(`Equalizer Preset: ${mode.toUpperCase()}`, 'success');
+    if (mode === 'fullbass') {
+      setIsFullBass(true);
+    } else if (mode !== 'bass') {
+      setIsFullBass(false);
+    }
+    showToast(`Equalizer Preset: ${mode.toUpperCase()} ${mode === 'fullbass' ? '🔥 (+18dB BASS)' : ''}`, 'success');
   };
 
   const setCrossfade = (enabled: boolean) => {
@@ -946,6 +979,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         shuffle,
         repeat,
         equalizer,
+        isFullBass,
         crossfade,
         sleepTimer,
         playTrack,
@@ -958,6 +992,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         shufflePlay,
         toggleRepeat,
         setEqualizer,
+        toggleFullBass,
         setCrossfade,
         setSleepTimer,
         addToQueue,

@@ -41,7 +41,11 @@ export const Visualizer: React.FC<VisualizerProps> = ({
     let baseHeightMin = 20;
     let baseHeightMax = 80;
 
-    if (equalizerPreset === 'bass') {
+    if (equalizerPreset === 'fullbass') {
+      speed = 40;
+      baseHeightMin = 50;
+      baseHeightMax = 100;
+    } else if (equalizerPreset === 'bass') {
       speed = 60;
       baseHeightMin = 40;
       baseHeightMax = 100;
@@ -58,11 +62,11 @@ export const Visualizer: React.FC<VisualizerProps> = ({
     const interval = setInterval(() => {
       setHeights(
         Array.from({ length: barCount }, (_, i) => {
-          // Bass EQ boosts lower frequencies (left side bars)
-          const isBassFreq = i < barCount / 3;
-          const boost = equalizerPreset === 'bass' && isBassFreq ? 1.4 : 1.0;
+          // Bass EQ boosts lower frequencies
+          const isBassFreq = i < barCount / 2;
+          const boost = equalizerPreset === 'fullbass' ? (isBassFreq ? 1.8 : 1.3) : (equalizerPreset === 'bass' && isBassFreq ? 1.4 : 1.0);
           const factor = Math.random() * (baseHeightMax - baseHeightMin) + baseHeightMin;
-          return Math.min(100, factor * boost * (volumeMultiplier + 0.2));
+          return Math.min(100, factor * boost * Math.min(1.5, volumeMultiplier + 0.2));
         })
       );
     }, speed);

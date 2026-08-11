@@ -78,10 +78,11 @@ export const SleepTimerModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
 // 2. Equalizer Preset Modal
 export const EqualizerModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
-  const { equalizer, setEqualizer } = useApp();
+  const { equalizer, setEqualizer, isFullBass, toggleFullBass, volume, setVolume } = useApp();
   const presets = [
-    { id: 'flat', name: 'Flat (Default)', desc: 'Standard balanced frequency curve' },
+    { id: 'fullbass', name: '🔥 FULL BASS VERSION (Subwoofer Boost)', desc: 'Maximum +18dB low-end sub-bass resonance & heavy kick thump' },
     { id: 'bass', name: 'Bass Boost 🔊', desc: 'Deeper subwoofers and enhanced low-end kicks' },
+    { id: 'flat', name: 'Flat (Default)', desc: 'Standard balanced frequency curve' },
     { id: 'treble', name: 'Treble Boost 🎼', desc: 'Sharper vocals, sparkling high hats and keys' },
     { id: 'electronic', name: 'Electronic Synth', desc: 'Pulsing dance frequencies, optimized for synths' },
     { id: 'vocal', name: 'Acoustic Vocal 🎤', desc: 'Brings voices and guitars straight to the center' },
@@ -98,34 +99,103 @@ export const EqualizerModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
             exit={{ scale: 0.95, opacity: 0 }}
             className="w-full max-w-md overflow-hidden bg-neutral-900 border border-solid border-white/10 rounded-2xl p-6 shadow-2xl"
           >
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <Volume2 className="w-5 h-5 text-[#FF3B5C]" />
-                <h3 className="text-lg font-bold text-neutral-100">Audio Equalizer Presets</h3>
+                <h3 className="text-lg font-bold text-neutral-100">Audio Equalizer & Amplification</h3>
               </div>
               <button onClick={onClose} className="p-1 hover:bg-white/5 rounded-lg text-neutral-400 hover:text-neutral-200">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <p className="text-xs text-neutral-400 mb-4">Fine-tune the acoustic wavelengths. RBH simulates digital sound shaping algorithm presets.</p>
+            {/* Volume Boost Control Bar */}
+            <div className="p-3 bg-gradient-to-r from-neutral-800 to-black border border-solid border-white/10 rounded-xl mb-4">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1.5">
+                  <Zap className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                  Volume Amplification (Up to 250%)
+                </span>
+                <span className={`text-xs font-extrabold px-2 py-0.5 rounded ${volume > 1.0 ? 'bg-[#FF3B5C] text-white shadow-[0_0_8px_rgba(255,59,92,0.8)]' : 'bg-white/10 text-neutral-300'}`}>
+                  {Math.round(volume * 100)}% {volume > 1.0 ? '🔥' : ''}
+                </span>
+              </div>
+
+              <input
+                type="range"
+                min={0}
+                max={2.5}
+                step={0.05}
+                value={volume}
+                onChange={e => setVolume(Number(e.target.value))}
+                className={`w-full h-1.5 rounded-lg appearance-none cursor-pointer outline-none mb-3 ${
+                  volume > 1.0
+                    ? 'bg-gradient-to-r from-amber-500 via-rose-500 to-[#FF3B5C] accent-[#FF3B5C]'
+                    : 'bg-white/20 accent-white'
+                }`}
+              />
+
+              <div className="grid grid-cols-4 gap-1.5">
+                {[
+                  { label: '100%', val: 1.0 },
+                  { label: '150%', val: 1.5 },
+                  { label: '200%', val: 2.0 },
+                  { label: '🔥 250%', val: 2.5 },
+                ].map((b) => (
+                  <button
+                    key={b.val}
+                    onClick={() => setVolume(b.val)}
+                    className={`py-1 rounded text-[10px] font-black transition-all cursor-pointer ${
+                      Math.abs(volume - b.val) < 0.05
+                        ? 'bg-[#FF3B5C] text-white shadow-md'
+                        : 'bg-white/5 hover:bg-white/10 text-neutral-300'
+                    }`}
+                  >
+                    {b.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Full Bass Toggle */}
+            <button
+              onClick={toggleFullBass}
+              className={`w-full mb-4 p-3 rounded-xl border border-solid font-black text-xs transition-all flex items-center justify-between cursor-pointer ${
+                isFullBass || equalizer === 'fullbass'
+                  ? 'bg-gradient-to-r from-[#FF3B5C] to-rose-600 text-white border-[#FF3B5C] shadow-[0_0_16px_rgba(255,59,92,0.5)]'
+                  : 'bg-white/5 hover:bg-white/10 text-neutral-200 border-white/10'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-base">🔥</span>
+                <div className="text-left">
+                  <p className="font-black text-sm">Full Bass Version Boost</p>
+                  <p className="text-[10px] opacity-80 font-semibold">+18dB Subwoofer Low-End Frequency Pump</p>
+                </div>
+              </div>
+              <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase ${isFullBass || equalizer === 'fullbass' ? 'bg-black/30 text-white' : 'bg-white/10 text-neutral-400'}`}>
+                {isFullBass || equalizer === 'fullbass' ? 'ENABLED' : 'OFF'}
+              </span>
+            </button>
+
+            <p className="text-xs text-neutral-400 mb-2 font-bold uppercase tracking-wider">Preset Modes</p>
             
-            <div className="space-y-2 mb-6 max-h-80 overflow-y-auto pr-1">
+            <div className="space-y-2 mb-2 max-h-56 overflow-y-auto pr-1">
               {presets.map(preset => {
-                const isSelected = equalizer === preset.id;
+                const isSelected = equalizer === preset.id || (preset.id === 'fullbass' && isFullBass);
                 return (
                   <button
                     key={preset.id}
                     onClick={() => { setEqualizer(preset.id); onClose(); }}
-                    className={`w-full flex items-center justify-between p-4 rounded-xl border border-solid transition-all text-left ${
+                    className={`w-full flex items-center justify-between p-3.5 rounded-xl border border-solid transition-all text-left cursor-pointer ${
                       isSelected 
-                        ? 'bg-[#FF3B5C]/10 border-[#FF3B5C]/40 text-[#FF3B5C]' 
+                        ? 'bg-[#FF3B5C]/10 border-[#FF3B5C]/50 text-[#FF3B5C]' 
                         : 'bg-white/5 border-transparent hover:bg-white/10 text-neutral-200'
                     }`}
                   >
                     <div>
-                      <p className="text-sm font-bold">{preset.name}</p>
-                      <p className="text-xs text-neutral-400 mt-1">{preset.desc}</p>
+                      <p className="text-xs font-bold">{preset.name}</p>
+                      <p className="text-[10px] text-neutral-400 mt-0.5">{preset.desc}</p>
                     </div>
                     {isSelected && (
                       <div className="flex gap-[2px] h-3 items-end">

@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Home, Search, Library, Plus, Disc, Award, Settings, Download, Heart, Music, Mic } from 'lucide-react';
+import { Home, Search, Library, Plus, Disc, Award, Settings, Download, Heart, Music, Mic, Zap } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { PlaylistCreateModal } from './Modals';
 
@@ -25,6 +25,7 @@ export const Sidebar: React.FC = () => {
     { id: 'home', label: 'Home', icon: Home },
     { id: 'search', label: 'Search', icon: Search },
     { id: 'singers', label: 'Singers', icon: Mic },
+    { id: 'dj', label: 'DJ Studio', icon: Zap },
     { id: 'library', label: 'Your Library', icon: Library },
   ];
 

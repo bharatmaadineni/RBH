@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { 
   Play, Pause, SkipForward, SkipBack, Shuffle, Repeat, 
   Volume2, VolumeX, ListMusic, Clock, Sliders, Maximize2, 
-  Sparkles, QrCode, Heart, Eye, ListCollapse, Volume, CheckCircle, ArrowLeft
+  Sparkles, QrCode, Heart, Eye, ListCollapse, Volume, CheckCircle, ArrowLeft, Zap, Disc
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { Visualizer } from './Visualizer';
@@ -32,12 +32,15 @@ export const AudioPlayer: React.FC = () => {
     repeat,
     toggleRepeat,
     equalizer,
+    isFullBass,
+    toggleFullBass,
     sleepTimer,
     queue,
     queueIndex,
     favorites,
     toggleLikeTrack,
-    showToast
+    showToast,
+    navigate
   } = useApp();
 
   // Modals visibility state
@@ -195,6 +198,21 @@ export const AudioPlayer: React.FC = () => {
             )}
           </button>
 
+          {/* Full Bass Version Toggle */}
+          <button
+            onClick={(e) => { e.stopPropagation(); toggleFullBass(); }}
+            className={`px-2 py-1 border border-solid rounded-lg text-xs font-black transition-all cursor-pointer flex items-center gap-1 ${
+              isFullBass || equalizer === 'fullbass'
+                ? 'bg-[#FF3B5C] text-white border-[#FF3B5C] shadow-[0_0_12px_rgba(255,59,92,0.6)] animate-pulse'
+                : 'bg-white/5 hover:bg-white/10 text-neutral-300 border-white/10'
+            }`}
+            title="Toggle Full Bass Boost Version (+18dB Subwoofer Gain)"
+            id="audio-player-full-bass-btn"
+          >
+            <span>🔥</span>
+            <span className="text-[10px] uppercase tracking-wider font-extrabold">Full Bass</span>
+          </button>
+
           <button
             onClick={(e) => { e.stopPropagation(); setIsEqOpen(true); }}
             className="p-1.5 hover:text-white transition-colors cursor-pointer"
@@ -211,7 +229,7 @@ export const AudioPlayer: React.FC = () => {
             <Maximize2 className="w-4 h-4" />
           </button>
 
-          {/* Volume control block */}
+          {/* Volume control block with 100%-250% boost support */}
           <div className="flex items-center gap-2" id="player-volume-block" onClick={(e) => e.stopPropagation()}>
             <button
               onClick={(e) => { e.stopPropagation(); setVolume(volume > 0 ? 0 : 0.8); }}
@@ -223,14 +241,31 @@ export const AudioPlayer: React.FC = () => {
             <input
               type="range"
               min={0}
-              max={1}
+              max={2.5}
               step={0.01}
               value={volume}
               onChange={e => { e.stopPropagation(); setVolume(Number(e.target.value)); }}
               onClick={e => e.stopPropagation()}
-              className="w-20 h-1 bg-white/20 hover:bg-white/30 rounded-lg appearance-none cursor-pointer accent-white outline-none"
+              className={`w-20 md:w-24 h-1 rounded-lg appearance-none cursor-pointer outline-none transition-colors ${
+                volume > 1.0 
+                  ? 'bg-gradient-to-r from-amber-500 via-rose-500 to-[#FF3B5C] accent-[#FF3B5C]' 
+                  : 'bg-white/20 hover:bg-white/30 accent-white'
+              }`}
               id="volume-input-range"
+              title={`Volume: ${Math.round(volume * 100)}%`}
             />
+            <button
+              onClick={(e) => { e.stopPropagation(); setVolume(volume >= 2.5 ? 1.0 : 2.5); }}
+              className={`px-1.5 py-0.5 rounded text-[9px] font-black tracking-wider transition-all cursor-pointer ${
+                volume > 1.0
+                  ? 'bg-[#FF3B5C] text-white border border-solid border-[#FF3B5C] shadow-[0_0_8px_rgba(255,59,92,0.8)]'
+                  : 'bg-white/5 text-neutral-400 hover:text-white border border-solid border-white/10'
+              }`}
+              title="Click to toggle 250% Volume Boost"
+              id="volume-boost-250-btn"
+            >
+              {Math.round(volume * 100)}% {volume > 1.0 ? '🔥' : ''}
+            </button>
           </div>
         </div>
       </div>
@@ -425,20 +460,41 @@ export const AudioPlayer: React.FC = () => {
                 </div>
               </div>
 
-              {/* Volume dial */}
+              {/* Volume dial & Full Bass boost */}
               <div className="flex items-center gap-3 justify-end w-full md:w-1/4">
+                <button
+                  onClick={toggleFullBass}
+                  className={`px-2 py-1 border border-solid rounded-lg text-xs font-black transition-all cursor-pointer flex items-center gap-1 ${
+                    isFullBass || equalizer === 'fullbass'
+                      ? 'bg-[#FF3B5C] text-white border-[#FF3B5C] shadow-[0_0_12px_rgba(255,59,92,0.8)]'
+                      : 'bg-white/10 hover:bg-white/20 text-neutral-300 border-white/10'
+                  }`}
+                  title="Full Bass Version (+18dB Boost)"
+                >
+                  🔥 <span className="text-[10px] font-extrabold uppercase">Full Bass</span>
+                </button>
                 <button onClick={() => setVolume(volume > 0 ? 0 : 0.8)} className="text-neutral-400 hover:text-white cursor-pointer">
                   {volume === 0 ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
                 </button>
                 <input
                   type="range"
                   min={0}
-                  max={1}
+                  max={2.5}
                   step={0.01}
                   value={volume}
                   onChange={e => setVolume(Number(e.target.value))}
-                  className="w-24 h-1 bg-white/15 rounded-lg appearance-none cursor-pointer accent-[#FF3B5C] outline-none"
+                  className={`w-24 h-1 rounded-lg appearance-none cursor-pointer outline-none ${
+                    volume > 1.0
+                      ? 'bg-gradient-to-r from-amber-500 via-rose-500 to-[#FF3B5C] accent-[#FF3B5C]'
+                      : 'bg-white/15 accent-[#FF3B5C]'
+                  }`}
                 />
+                <button
+                  onClick={() => setVolume(volume >= 2.5 ? 1.0 : 2.5)}
+                  className="px-2 py-1 bg-[#FF3B5C]/20 border border-solid border-[#FF3B5C]/50 rounded text-xs font-black text-[#FF3B5C] hover:bg-[#FF3B5C] hover:text-white transition-all cursor-pointer"
+                >
+                  {Math.round(volume * 100)}%
+                </button>
               </div>
             </div>
           </div>

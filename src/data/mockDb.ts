@@ -244,15 +244,35 @@ export const INITIAL_TRACKS: Track[] = [
       { time: 28, text: "Karthikeya 2 theme in immersive high-fidelity" },
     ],
   },
+  {
+    id: 'tr_15',
+    title: 'Raga of Revenge',
+    artistId: 'art_3',
+    artistName: 'Anirudh Ravichander',
+    albumId: 'alb_1',
+    albumName: 'Raga of Revenge Single',
+    coverUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&q=80',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/Raga%20of%20Revenge.mp3',
+    duration: 245,
+    genre: 'Tollywood Mass',
+    playCount: 310000,
+    likes: 22400,
+    fileSize: '8.5 MB',
+    lyrics: [
+      { time: 0, text: "[High Energy Mass Instrumental BGM Intro]" },
+      { time: 15, text: "Feel the intense power of Raga of Revenge" },
+      { time: 30, text: "Pulsing rhythms reverberating in high-fidelity" },
+    ],
+  },
 ];
 
 export const INITIAL_PLAYLISTS: Playlist[] = [
   {
     id: 'pl_dm1',
     name: 'FAVOURITE MUSIC',
-    description: 'Your curated favourite tracks featuring Meghallo, DARSHANA, anthinthom & karthikeya.',
+    description: 'Your curated favourite tracks featuring Meghallo, DARSHANA, anthinthom, karthikeya & Raga of Revenge.',
     coverUrl: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=400&q=80',
-    tracks: ['tr_11', 'tr_12', 'tr_13', 'tr_14'],
+    tracks: ['tr_15', 'tr_11', 'tr_12', 'tr_13', 'tr_14'],
     isPublic: true,
     isCollaborative: true,
     createdBy: 'system',
@@ -272,9 +292,9 @@ export const INITIAL_PLAYLISTS: Playlist[] = [
   {
     id: 'pl_2',
     name: "Today's Top Hits",
-    description: 'The hottest tracks trending on the airwaves.',
+    description: 'The hottest tracks trending on the airwaves featuring Raga of Revenge.',
     coverUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&q=80',
-    tracks: ['tr_11'],
+    tracks: ['tr_15', 'tr_11', 'tr_12', 'tr_13', 'tr_14'],
     isPublic: true,
     isCollaborative: false,
     createdBy: 'system',
@@ -285,7 +305,7 @@ export const INITIAL_PLAYLISTS: Playlist[] = [
     name: 'Workout Hits',
     description: 'High octane progressive electronic and bass rhythms to drive energy.',
     coverUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=400&q=80',
-    tracks: ['tr_11'],
+    tracks: ['tr_15', 'tr_11'],
     isPublic: true,
     isCollaborative: false,
     createdBy: 'system',
@@ -452,8 +472,8 @@ export const db = {
     if (missingInitials.length > 0) {
       result = [...stored, ...missingInitials];
     }
-    // Filter to tr_11, tr_12, tr_13, tr_14 and matching titles
-    result = result.filter(t => t.id === 'tr_11' || t.id === 'tr_12' || t.id === 'tr_13' || t.id === 'tr_14' || t.title.toLowerCase().includes('meghallo') || t.title.toLowerCase().includes('darshana') || t.title.toLowerCase().includes('anthinthom') || t.title.toLowerCase().includes('karthikeya'));
+    // Filter to tr_11, tr_12, tr_13, tr_14, tr_15 and matching titles
+    result = result.filter(t => t.id === 'tr_11' || t.id === 'tr_12' || t.id === 'tr_13' || t.id === 'tr_14' || t.id === 'tr_15' || t.title.toLowerCase().includes('meghallo') || t.title.toLowerCase().includes('darshana') || t.title.toLowerCase().includes('anthinthom') || t.title.toLowerCase().includes('karthikeya') || t.title.toLowerCase().includes('raga of revenge'));
     if (!result.some(t => t.id === 'tr_12')) {
       const darshana = INITIAL_TRACKS.find(t => t.id === 'tr_12');
       if (darshana) result.push(darshana);
@@ -465,6 +485,10 @@ export const db = {
     if (!result.some(t => t.id === 'tr_14')) {
       const karthikeya = INITIAL_TRACKS.find(t => t.id === 'tr_14');
       if (karthikeya) result.push(karthikeya);
+    }
+    if (!result.some(t => t.id === 'tr_15')) {
+      const raga = INITIAL_TRACKS.find(t => t.id === 'tr_15');
+      if (raga) result.push(raga);
     }
     result = result.map(t => {
       if (t.id === 'tr_11') {
@@ -501,6 +525,15 @@ export const db = {
           audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/karthikeya_2_flute_bgm.mp3',
           artistName: 'Rbh immersive high-fidelity',
           fileSize: '5.8 MB',
+        };
+      }
+      if (t.id === 'tr_15') {
+        return {
+          ...t,
+          title: 'Raga of Revenge',
+          audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/Raga%20of%20Revenge.mp3',
+          artistName: 'Rbh immersive high-fidelity',
+          fileSize: '8.5 MB',
         };
       }
       return t;
@@ -562,8 +595,16 @@ export const db = {
         return {
           ...p,
           name: 'FAVOURITE MUSIC',
-          description: 'Your curated favourite tracks featuring Meghallo, DARSHANA, anthinthom & karthikeya.',
-          tracks: ['tr_11', 'tr_12', 'tr_13', 'tr_14'],
+          description: 'Your curated favourite tracks featuring Meghallo, DARSHANA, anthinthom, karthikeya & Raga of Revenge.',
+          tracks: ['tr_15', 'tr_11', 'tr_12', 'tr_13', 'tr_14'],
+        };
+      }
+      if (p.id === 'pl_2') {
+        return {
+          ...p,
+          name: "Today's Top Hits",
+          description: 'The hottest tracks trending on the airwaves featuring Raga of Revenge.',
+          tracks: ['tr_15', 'tr_11', 'tr_12', 'tr_13', 'tr_14'],
         };
       }
       return p;
