@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { Track } from '../types';
+import { fetchSupabaseSongs } from '../lib/supabase';
 
 export const Dashboard: React.FC = () => {
   const { 
@@ -45,12 +46,14 @@ export const Dashboard: React.FC = () => {
   const [aiLoading, setAiLoading] = useState(false);
   const [aiResult, setAiResult] = useState<{ genres: string[]; reason: string } | null>(null);
 
-  // Set greeting based on time of day
+  // Set greeting based on time of day and populate Supabase songs container
   useEffect(() => {
     const hr = new Date().getHours();
     if (hr < 12) setGreeting('Good morning');
     else if (hr < 17) setGreeting('Good afternoon');
     else setGreeting('Good evening');
+
+    fetchSupabaseSongs().catch(console.error);
   }, []);
 
   const handleAiRecommendation = async (e: React.FormEvent) => {
@@ -364,6 +367,9 @@ export const Dashboard: React.FC = () => {
           })}
         </div>
       </section>
+
+      {/* Hidden Supabase songs container for background DOM compatibility */}
+      <div id="songs" className="hidden"></div>
 
       {/* Playlists section ends */}
     </div>

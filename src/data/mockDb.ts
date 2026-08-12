@@ -167,6 +167,90 @@ export const INITIAL_ALBUMS: Album[] = [
 
 export const INITIAL_TRACKS: Track[] = [
   {
+    id: 'tr_devara',
+    title: 'Fear',
+    artistId: 'art_3',
+    artistName: 'Anirudh Ravichander',
+    albumId: 'alb_1',
+    albumName: 'Devara Part 1',
+    coverUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&q=80',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/DEVARA/Fear.mp3',
+    duration: 195,
+    genre: 'Tollywood Mass',
+    playCount: 520000,
+    likes: 42800,
+    fileSize: '7.8 MB',
+    lyrics: [
+      { time: 0, text: "[All Hail The Tiger - Devara Mass Theme Intro]" },
+      { time: 12, text: "Fear song reverberating across the shores" },
+      { time: 25, text: "Devara - King of the sea" },
+      { time: 40, text: "Feel the unstoppable wave of energy" },
+    ],
+  },
+  {
+    id: 'tr_devara_tiger',
+    title: 'All Hail The Tiger',
+    artistId: 'art_3',
+    artistName: 'Anirudh Ravichander',
+    albumId: 'alb_1',
+    albumName: 'Devara Part 1',
+    coverUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&q=80',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/DEVARA/All%20Hail%20The%20Tiger.mp3',
+    duration: 210,
+    genre: 'Tollywood Mass',
+    playCount: 480000,
+    likes: 39500,
+    fileSize: '8.2 MB',
+    lyrics: [
+      { time: 0, text: "[All Hail The Tiger - Devara High Energy Mass Theme Intro]" },
+      { time: 15, text: "All Hail The Tiger reverberating across the lands" },
+      { time: 30, text: "Devara roar of thunder" },
+      { time: 45, text: "Feel the wild mass tide rising" },
+    ],
+  },
+  {
+    id: 'tr_devara_chuttamalle',
+    title: 'Chuttamalle',
+    artistId: 'art_3',
+    artistName: 'Anirudh Ravichander',
+    albumId: 'alb_1',
+    albumName: 'Devara Part 1',
+    coverUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&q=80',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/DEVARA/Chuttamalle.mp3',
+    duration: 222,
+    genre: 'Tollywood Melody',
+    playCount: 650000,
+    likes: 58200,
+    fileSize: '8.5 MB',
+    lyrics: [
+      { time: 0, text: "[Chuttamalle - Romantic Melodious Theme Intro]" },
+      { time: 14, text: "Chuttamalle chuttukoraa..." },
+      { time: 28, text: "Feel the sweet breeze of romance" },
+      { time: 45, text: "Anirudh melodic magic" },
+    ],
+  },
+  {
+    id: 'tr_devara_redsea',
+    title: 'Red Sea',
+    artistId: 'art_3',
+    artistName: 'Anirudh Ravichander',
+    albumId: 'alb_1',
+    albumName: 'Devara Part 1',
+    coverUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&q=80',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/DEVARA/Red%20Sea.mp3',
+    duration: 185,
+    genre: 'Tollywood Mass',
+    playCount: 420000,
+    likes: 35000,
+    fileSize: '7.5 MB',
+    lyrics: [
+      { time: 0, text: "[Red Sea - Devara Mass Action BGM Intro]" },
+      { time: 15, text: "Red Sea turning crimson on the shores" },
+      { time: 30, text: "Devara - Unstoppable tide" },
+      { time: 45, text: "Massive waves of Anirudh thunder" },
+    ],
+  },
+  {
     id: 'tr_11',
     title: 'Meghallo',
     artistId: 'art_1',
@@ -270,9 +354,9 @@ export const INITIAL_PLAYLISTS: Playlist[] = [
   {
     id: 'pl_dm1',
     name: 'FAVOURITE MUSIC',
-    description: 'Your curated favourite tracks featuring Meghallo, DARSHANA, anthinthom, karthikeya & Raga of Revenge.',
+    description: 'Your curated favourite tracks featuring Fear, All Hail The Tiger, Chuttamalle, Red Sea, Meghallo, DARSHANA, anthinthom, karthikeya & Raga of Revenge.',
     coverUrl: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=400&q=80',
-    tracks: ['tr_15', 'tr_11', 'tr_12', 'tr_13', 'tr_14'],
+    tracks: ['tr_devara', 'tr_devara_tiger', 'tr_devara_chuttamalle', 'tr_devara_redsea', 'tr_15', 'tr_11', 'tr_12', 'tr_13', 'tr_14'],
     isPublic: true,
     isCollaborative: true,
     createdBy: 'system',
@@ -292,9 +376,9 @@ export const INITIAL_PLAYLISTS: Playlist[] = [
   {
     id: 'pl_2',
     name: "Today's Top Hits",
-    description: 'The hottest tracks trending on the airwaves featuring Raga of Revenge.',
+    description: "The hottest tracks trending on the airwaves featuring Fear, All Hail The Tiger, Chuttamalle, Red Sea & top hits.",
     coverUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&q=80',
-    tracks: ['tr_15', 'tr_11', 'tr_12', 'tr_13', 'tr_14'],
+    tracks: ['tr_devara', 'tr_devara_tiger', 'tr_devara_chuttamalle', 'tr_devara_redsea', 'tr_15', 'tr_11', 'tr_12', 'tr_13', 'tr_14'],
     isPublic: true,
     isCollaborative: false,
     createdBy: 'system',
@@ -472,8 +556,45 @@ export const db = {
     if (missingInitials.length > 0) {
       result = [...stored, ...missingInitials];
     }
-    // Filter to tr_11, tr_12, tr_13, tr_14, tr_15 and matching titles
-    result = result.filter(t => t.id === 'tr_11' || t.id === 'tr_12' || t.id === 'tr_13' || t.id === 'tr_14' || t.id === 'tr_15' || t.title.toLowerCase().includes('meghallo') || t.title.toLowerCase().includes('darshana') || t.title.toLowerCase().includes('anthinthom') || t.title.toLowerCase().includes('karthikeya') || t.title.toLowerCase().includes('raga of revenge'));
+    // Filter to tr_devara, tr_devara_tiger, tr_devara_chuttamalle, tr_devara_redsea, tr_11, tr_12, tr_13, tr_14, tr_15 and matching titles
+    result = result.filter(t => t.id === 'tr_devara' || t.id === 'tr_devara_tiger' || t.id === 'tr_devara_chuttamalle' || t.id === 'tr_devara_redsea' || t.id === 'tr_11' || t.id === 'tr_12' || t.id === 'tr_13' || t.id === 'tr_14' || t.id === 'tr_15' || t.title.toLowerCase().includes('devara') || t.title.toLowerCase().includes('tiger') || t.title.toLowerCase().includes('chuttamalle') || t.title.toLowerCase().includes('red sea') || t.title.toLowerCase().includes('meghallo') || t.title.toLowerCase().includes('darshana') || t.title.toLowerCase().includes('anthinthom') || t.title.toLowerCase().includes('karthikeya') || t.title.toLowerCase().includes('raga of revenge'));
+    if (!result.some(t => t.id === 'tr_devara')) {
+      const devara = INITIAL_TRACKS.find(t => t.id === 'tr_devara');
+      if (devara) result.unshift(devara);
+    }
+    if (!result.some(t => t.id === 'tr_devara_tiger')) {
+      const tiger = INITIAL_TRACKS.find(t => t.id === 'tr_devara_tiger');
+      if (tiger) {
+        const devaraIdx = result.findIndex(t => t.id === 'tr_devara');
+        if (devaraIdx !== -1) {
+          result.splice(devaraIdx + 1, 0, tiger);
+        } else {
+          result.unshift(tiger);
+        }
+      }
+    }
+    if (!result.some(t => t.id === 'tr_devara_chuttamalle')) {
+      const chuttamalle = INITIAL_TRACKS.find(t => t.id === 'tr_devara_chuttamalle');
+      if (chuttamalle) {
+        const tigerIdx = result.findIndex(t => t.id === 'tr_devara_tiger');
+        if (tigerIdx !== -1) {
+          result.splice(tigerIdx + 1, 0, chuttamalle);
+        } else {
+          result.unshift(chuttamalle);
+        }
+      }
+    }
+    if (!result.some(t => t.id === 'tr_devara_redsea')) {
+      const redsea = INITIAL_TRACKS.find(t => t.id === 'tr_devara_redsea');
+      if (redsea) {
+        const chuttamalleIdx = result.findIndex(t => t.id === 'tr_devara_chuttamalle');
+        if (chuttamalleIdx !== -1) {
+          result.splice(chuttamalleIdx + 1, 0, redsea);
+        } else {
+          result.unshift(redsea);
+        }
+      }
+    }
     if (!result.some(t => t.id === 'tr_12')) {
       const darshana = INITIAL_TRACKS.find(t => t.id === 'tr_12');
       if (darshana) result.push(darshana);
@@ -491,6 +612,42 @@ export const db = {
       if (raga) result.push(raga);
     }
     result = result.map(t => {
+      if (t.id === 'tr_devara') {
+        return {
+          ...t,
+          title: 'Fear',
+          audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/DEVARA/Fear.mp3',
+          artistName: 'Anirudh Ravichander',
+          fileSize: '7.8 MB',
+        };
+      }
+      if (t.id === 'tr_devara_tiger') {
+        return {
+          ...t,
+          title: 'All Hail The Tiger',
+          audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/DEVARA/All%20Hail%20The%20Tiger.mp3',
+          artistName: 'Anirudh Ravichander',
+          fileSize: '8.2 MB',
+        };
+      }
+      if (t.id === 'tr_devara_chuttamalle') {
+        return {
+          ...t,
+          title: 'Chuttamalle',
+          audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/DEVARA/Chuttamalle.mp3',
+          artistName: 'Anirudh Ravichander',
+          fileSize: '8.5 MB',
+        };
+      }
+      if (t.id === 'tr_devara_redsea') {
+        return {
+          ...t,
+          title: 'Red Sea',
+          audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/DEVARA/Red%20Sea.mp3',
+          artistName: 'Anirudh Ravichander',
+          fileSize: '7.5 MB',
+        };
+      }
       if (t.id === 'tr_11') {
         return {
           ...t,
@@ -595,16 +752,16 @@ export const db = {
         return {
           ...p,
           name: 'FAVOURITE MUSIC',
-          description: 'Your curated favourite tracks featuring Meghallo, DARSHANA, anthinthom, karthikeya & Raga of Revenge.',
-          tracks: ['tr_15', 'tr_11', 'tr_12', 'tr_13', 'tr_14'],
+          description: 'Your curated favourite tracks featuring Fear, All Hail The Tiger, Chuttamalle, Red Sea, Meghallo, DARSHANA, anthinthom, karthikeya & Raga of Revenge.',
+          tracks: ['tr_devara', 'tr_devara_tiger', 'tr_devara_chuttamalle', 'tr_devara_redsea', 'tr_15', 'tr_11', 'tr_12', 'tr_13', 'tr_14'],
         };
       }
       if (p.id === 'pl_2') {
         return {
           ...p,
           name: "Today's Top Hits",
-          description: 'The hottest tracks trending on the airwaves featuring Raga of Revenge.',
-          tracks: ['tr_15', 'tr_11', 'tr_12', 'tr_13', 'tr_14'],
+          description: "The hottest tracks trending on the airwaves featuring Fear, All Hail The Tiger, Chuttamalle, Red Sea & top hits.",
+          tracks: ['tr_devara', 'tr_devara_tiger', 'tr_devara_chuttamalle', 'tr_devara_redsea', 'tr_15', 'tr_11', 'tr_12', 'tr_13', 'tr_14'],
         };
       }
       return p;

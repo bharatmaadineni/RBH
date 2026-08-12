@@ -42,7 +42,24 @@ export const SearchPage: React.FC = () => {
 
   // Live filter results
   const filteredTracks = tracks.filter(t => {
-    const matchesQuery = t.title.toLowerCase().includes(query.toLowerCase()) || t.artistName.toLowerCase().includes(query.toLowerCase());
+    const q = query.toLowerCase().trim();
+    if (!q) {
+      return selectedGenre === 'All' || t.genre.toLowerCase() === selectedGenre.toLowerCase();
+    }
+
+    const matchesDirect = 
+      t.title.toLowerCase().includes(q) || 
+      t.artistName.toLowerCase().includes(q) ||
+      (t.albumName && t.albumName.toLowerCase().includes(q)) ||
+      (t.genre && t.genre.toLowerCase().includes(q));
+
+    const isDevaraQuery = q.includes('devara') || q.includes('devra');
+    const isDevaraTrack = 
+      t.id.startsWith('tr_devara') || 
+      (t.albumName && t.albumName.toLowerCase().includes('devara')) ||
+      ['fear', 'all hail the tiger', 'chuttamalle', 'red sea'].some(name => t.title.toLowerCase().includes(name));
+
+    const matchesQuery = matchesDirect || (isDevaraQuery && isDevaraTrack);
     const matchesGenre = selectedGenre === 'All' || t.genre.toLowerCase() === selectedGenre.toLowerCase();
     return matchesQuery && matchesGenre;
   });

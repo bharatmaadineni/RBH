@@ -6,6 +6,7 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { Track, Album, Artist, Playlist, UserProfile, FriendActivity, ChatMessage, ListeningStats } from '../types';
 import { db } from '../data/mockDb';
+import { supabase, fetchSupabaseSongs, subscribeToSupabaseSongs } from '../lib/supabase';
 
 // Define Context structure
 interface AppContextType {
@@ -221,6 +222,36 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setSearchHistory(db.getSearchHistory());
     setChatMessages(db.getChatMessages());
     setFriendActivity(db.getFriendActivity());
+
+    // Fetch songs from Supabase seamlessly and put them at the top of the track list
+    const syncSupabaseSongs = (supabaseSongs: any[]) => {
+      if (supabaseSongs && supabaseSongs.length > 0) {
+        const mappedSongs: Track[] = supabaseSongs.map((s: any, idx: number) => ({
+          id: s.id ? `sb_${s.id}` : `sb_song_${idx}`,
+          title: s.title || 'Untitled Track',
+          artistId: s.artist_id || 'art_1',
+          artistName: s.artist || s.artist_name || 'Featured Artist',
+          albumId: s.album_id || 'alb_1',
+          albumName: s.album || s.album_title || s.album_name || 'Single',
+          duration: s.duration || 210,
+          coverUrl: s.cover_url || s.image_url || s.cover || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&q=80',
+          audioUrl: s.audio_url || s.audioUrl || 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+          genre: s.genre || 'Trending',
+          playCount: s.play_count || s.plays || 15000,
+          likes: s.likes || 1200,
+          isExplicit: s.is_explicit || false,
+        }));
+
+        setTracks(prev => {
+          const nonSbTracks = prev.filter(t => !t.id.startsWith('sb_'));
+          return [...mappedSongs, ...nonSbTracks];
+        });
+      }
+    };
+
+    fetchSupabaseSongs().then(songs => {
+      if (songs) syncSupabaseSongs(songs);
+    }).catch(err => console.error("Error fetching songs from Supabase:", err));
   };
 
   useEffect(() => {
@@ -238,11 +269,50 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
     refreshMusicDb();
 
+    // Helper to map and sync songs directly
+    const syncHelper = (songs: any[]) => {
+      if (songs && songs.length > 0) {
+        const mappedSongs: Track[] = songs.map((s: any, idx: number) => ({
+          id: s.id ? `sb_${s.id}` : `sb_song_${idx}`,
+          title: s.title || 'Untitled Track',
+          artistId: s.artist_id || 'art_1',
+          artistName: s.artist || s.artist_name || 'Featured Artist',
+          albumId: s.album_id || 'alb_1',
+          albumName: s.album || s.album_title || s.album_name || 'Single',
+          duration: s.duration || 210,
+          coverUrl: s.cover_url || s.image_url || s.cover || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&q=80',
+          audioUrl: s.audio_url || s.audioUrl || 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+          genre: s.genre || 'Trending',
+          playCount: s.play_count || s.plays || 15000,
+          likes: s.likes || 1200,
+          isExplicit: s.is_explicit || false,
+        }));
+
+        setTracks(prev => {
+          const nonSbTracks = prev.filter(t => !t.id.startsWith('sb_'));
+          return [...mappedSongs, ...nonSbTracks];
+        });
+      }
+    };
+
+    // Auto-subscribe to realtime Supabase updates and periodic auto-sync
+    const unsubscribe = subscribeToSupabaseSongs((songs) => {
+      if (songs) syncHelper(songs);
+    });
+
+    const pollInterval = setInterval(() => {
+      fetchSupabaseSongs().then(songs => {
+        if (songs) syncHelper(songs);
+      }).catch(() => {});
+    }, 10000);
+
     // Create global audio element
     audioRef.current = new Audio();
     audioRef.current.volume = volume;
 
     return () => {
+      unsubscribe();
+      clearInterval(pollInterval);
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current = null;
