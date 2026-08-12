@@ -152,7 +152,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     showToast(`✨ Added ${artistIds.length} favorite singers to your following list!`, 'success');
   };
 
-  // HTML5 Audio Reference
+  // HTML5 Audio References
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const sleepTimerIdRef = useRef<any>(null);
   const playPromiseRef = useRef<Promise<void> | null>(null);
@@ -161,6 +161,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const safePlay = async () => {
     const audio = audioRef.current;
     if (!audio) return;
+
+    // Ensure volume is synchronized and audio is unmuted
+    audio.volume = Math.max(0.01, Math.min(1.0, volume > 0 ? (volume > 1.0 ? 1.0 : volume) : 0));
+    audio.muted = false;
 
     let playPromise: Promise<void> | null = null;
     try {
@@ -250,13 +254,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, []);
 
   // Sync volume natively to HTML5 audio element
-  const setVolume = (vol: number) => {
-    const clampedVol = Math.max(0, Math.min(2.5, vol));
+  const setVolume = (vol: number | ((prev: number) => number)) => {
+    const newVol = typeof vol === 'function' ? vol(volume) : vol;
+    const clampedVol = Math.max(0, Math.min(2.5, newVol));
     _setVolume(clampedVol);
 
     if (audioRef.current) {
       // Set native audio volume (clamped 0 to 1.0 for HTML5 audio)
-      audioRef.current.volume = Math.max(0, Math.min(1.0, clampedVol));
+      audioRef.current.volume = Math.max(0, Math.min(1.0, clampedVol > 1.0 ? 1.0 : clampedVol));
       audioRef.current.muted = false;
     }
 
@@ -267,6 +272,50 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }
     }
   };
+
+  // Hardware Mobile Volume Keys Listener (Phone Volume Buttons / Volume Keys / Keyboard Shortcuts)
+  useEffect(() => {
+    const handleVolumeKey = (e: KeyboardEvent) => {
+      // Ignore if user is currently typing in input or textarea
+      const target = e.target as HTMLElement;
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
+        return;
+      }
+
+      if (e.key === 'AudioVolumeUp' || e.key === 'VolumeUp') {
+        e.preventDefault();
+        setVolume(prev => {
+          const next = Math.min(2.5, Math.round((prev + 0.1) * 10) / 10);
+          showToast(`📱 Phone Volume Key Press: Volume ${Math.round(next * 100)}%`, 'info');
+          return next;
+        });
+      } else if (e.key === 'AudioVolumeDown' || e.key === 'VolumeDown') {
+        e.preventDefault();
+        setVolume(prev => {
+          const next = Math.max(0, Math.round((prev - 0.1) * 10) / 10);
+          showToast(`📱 Phone Volume Key Press: Volume ${Math.round(next * 100)}%`, 'info');
+          return next;
+        });
+      } else if (e.altKey && (e.key === 'ArrowUp' || e.key === '=' || e.key === '+')) {
+        e.preventDefault();
+        setVolume(prev => {
+          const next = Math.min(2.5, Math.round((prev + 0.1) * 10) / 10);
+          showToast(`🔊 Volume Boost: ${Math.round(next * 100)}%`, 'info');
+          return next;
+        });
+      } else if (e.altKey && (e.key === 'ArrowDown' || e.key === '-')) {
+        e.preventDefault();
+        setVolume(prev => {
+          const next = Math.max(0, Math.round((prev - 0.1) * 10) / 10);
+          showToast(`🔉 Volume Reduced: ${Math.round(next * 100)}%`, 'info');
+          return next;
+        });
+      }
+    };
+
+    window.addEventListener('keydown', handleVolumeKey);
+    return () => window.removeEventListener('keydown', handleVolumeKey);
+  }, []);
 
   // Toast management
   const showToast = (message: string, type: 'success' | 'info' | 'error' | 'warning' = 'info') => {

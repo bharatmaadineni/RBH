@@ -203,7 +203,7 @@ export const INITIAL_TRACKS: Track[] = [
     lyrics: [
       { time: 0, text: "[Darshana Instrumental BGM Intro]" },
       { time: 15, text: "Feel the pulse of Hridayam melodies" },
-      { time: 30, text: "Darshana reverberating in high-fidelity" },
+      { time: 30, text: "Darshana reverberating sound" },
     ],
   },
   {
@@ -222,7 +222,7 @@ export const INITIAL_TRACKS: Track[] = [
     lyrics: [
       { time: 0, text: "[Athinthom Classical Instrumental Intro]" },
       { time: 15, text: "Athinthom rhythm by S.P. Balasubrahmanyam" },
-      { time: 30, text: "Timeless Vaishali melody in high-fidelity" },
+      { time: 30, text: "Timeless Vaishali melody" },
     ],
   },
   {
@@ -241,7 +241,7 @@ export const INITIAL_TRACKS: Track[] = [
     lyrics: [
       { time: 0, text: "[Karthikeya Flute BGM Theme Intro]" },
       { time: 12, text: "Mystic flute melody echoing with divine resonance" },
-      { time: 28, text: "Karthikeya 2 theme in immersive high-fidelity" },
+      { time: 28, text: "Karthikeya 2 theme" },
     ],
   },
   {
@@ -261,7 +261,7 @@ export const INITIAL_TRACKS: Track[] = [
     lyrics: [
       { time: 0, text: "[High Energy Mass Instrumental BGM Intro]" },
       { time: 15, text: "Feel the intense power of Raga of Revenge" },
-      { time: 30, text: "Pulsing rhythms reverberating in high-fidelity" },
+      { time: 30, text: "Pulsing rhythms reverberating" },
     ],
   },
 ];

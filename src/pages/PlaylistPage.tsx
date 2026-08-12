@@ -64,7 +64,6 @@ export const PlaylistPage: React.FC = () => {
         <img src={playlist.coverUrl} alt={playlist.name} className="w-40 h-40 rounded-2xl object-cover border border-solid border-white/15" />
         
         <div className="flex-1 text-center md:text-left space-y-2">
-          <span className="text-[10px] uppercase font-black tracking-widest text-cyan-400">Custom Compilation</span>
           <h2 className="text-2xl md:text-4xl font-black text-white leading-tight">{playlist.name}</h2>
           <p className="text-xs text-neutral-400 leading-relaxed max-w-xl">{playlist.description}</p>
           
