@@ -9,7 +9,6 @@ import { AppProvider, useApp } from './context/AppContext';
 import { Toast } from './components/Toast';
 import { Sidebar } from './components/Sidebar';
 import { Navbar } from './components/Navbar';
-import { FriendFeed } from './components/FriendFeed';
 import { AudioPlayer } from './components/AudioPlayer';
 import { SplashScreen } from './components/SplashScreen';
 
@@ -76,9 +75,6 @@ const AuraAppContent: React.FC = () => {
                 {activeView === 'admin' && <AdminPanel />}
               </main>
             </div>
-
-            {/* Right side social panel & real-time chat lounge */}
-            <FriendFeed />
           </div>
 
           {/* Bottom sticky audio control center */}

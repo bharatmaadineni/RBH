@@ -178,14 +178,6 @@ export const AudioPlayer: React.FC = () => {
         {/* Utility Controls (Right Block) */}
         <div className="hidden md:flex items-center justify-end w-1/4 gap-3 text-[#A7A7A7]" id="player-utility-controls">
           <button
-            onClick={(e) => { e.stopPropagation(); setIsLyricsOpen(true); }}
-            className="p-1.5 hover:text-white transition-colors cursor-pointer"
-            title="Lyrics"
-          >
-            <Sparkles className="w-4 h-4" />
-          </button>
-
-          <button
             onClick={(e) => { e.stopPropagation(); setIsSleepOpen(true); }}
             className={`p-1.5 hover:text-white transition-colors cursor-pointer relative ${sleepTimer !== null ? 'text-[#FF3B5C]' : ''}`}
             title={sleepTimer !== null ? `Sleep Timer: ${sleepTimer}m remaining` : 'Sleep Timer'}
@@ -196,21 +188,6 @@ export const AudioPlayer: React.FC = () => {
                 z
               </span>
             )}
-          </button>
-
-          {/* Full Bass Version Toggle */}
-          <button
-            onClick={(e) => { e.stopPropagation(); toggleFullBass(); }}
-            className={`px-2 py-1 border border-solid rounded-lg text-xs font-black transition-all cursor-pointer flex items-center gap-1 ${
-              isFullBass || equalizer === 'fullbass'
-                ? 'bg-[#FF3B5C] text-white border-[#FF3B5C] shadow-[0_0_12px_rgba(255,59,92,0.6)] animate-pulse'
-                : 'bg-white/5 hover:bg-white/10 text-neutral-300 border-white/10'
-            }`}
-            title="Toggle Full Bass Boost Version (+18dB Subwoofer Gain)"
-            id="audio-player-full-bass-btn"
-          >
-            <span>🔥</span>
-            <span className="text-[10px] uppercase tracking-wider font-extrabold">Full Bass</span>
           </button>
 
           <button
@@ -460,19 +437,8 @@ export const AudioPlayer: React.FC = () => {
                 </div>
               </div>
 
-              {/* Volume dial & Full Bass boost */}
+              {/* Volume dial */}
               <div className="flex items-center gap-3 justify-end w-full md:w-1/4">
-                <button
-                  onClick={toggleFullBass}
-                  className={`px-2 py-1 border border-solid rounded-lg text-xs font-black transition-all cursor-pointer flex items-center gap-1 ${
-                    isFullBass || equalizer === 'fullbass'
-                      ? 'bg-[#FF3B5C] text-white border-[#FF3B5C] shadow-[0_0_12px_rgba(255,59,92,0.8)]'
-                      : 'bg-white/10 hover:bg-white/20 text-neutral-300 border-white/10'
-                  }`}
-                  title="Full Bass Version (+18dB Boost)"
-                >
-                  🔥 <span className="text-[10px] font-extrabold uppercase">Full Bass</span>
-                </button>
                 <button onClick={() => setVolume(volume > 0 ? 0 : 0.8)} className="text-neutral-400 hover:text-white cursor-pointer">
                   {volume === 0 ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
                 </button>

@@ -25,7 +25,7 @@ export const Sidebar: React.FC = () => {
     { id: 'home', label: 'Home', icon: Home },
     { id: 'search', label: 'Search', icon: Search },
     { id: 'singers', label: 'Singers', icon: Mic },
-    { id: 'dj', label: 'DJ Studio', icon: Zap },
+    { id: 'dj', label: 'MY STUDIO', icon: Zap },
     { id: 'library', label: 'Your Library', icon: Library },
   ];
 
