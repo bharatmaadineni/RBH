@@ -116,9 +116,44 @@ export const INITIAL_ARTISTS: Artist[] = [
     followers: 8900000,
     genres: ['Ghazal', 'Tamil Melodies', 'Telugu Classical'],
   },
+  {
+    id: 'art_didi',
+    name: 'Shashwat Sachdev',
+    avatarUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&q=80',
+    bio: 'Renowned music composer and producer known for energetic hit tracks and vibrant soundtracks like Didi.',
+    followers: 4200000,
+    genres: ['Bollywood', 'Indie', 'Pop'],
+  },
 ];
 
 export const INITIAL_ALBUMS: Album[] = [
+  {
+    id: 'alb_dhurandhar',
+    title: 'Dhurandhar 2 - Revenge',
+    artistId: 'art_didi',
+    artistName: 'Shashwat Sachdev',
+    coverUrl: '/dhurandhar_poster.jpg',
+    releaseDate: '2026-08-01',
+    genre: 'Bollywood / Action',
+    description: 'Ranveer Singh delivers a power-packed performance in Dhurandhar Revenge.',
+    tracks: [
+      'tr_didi', 'tr_phir_se', 'tr_aakhri_ishq', 'tr_aari_aari',
+      'tr_jaan_se_guzarte_hain', 'tr_jaiye_sanjana', 'tr_main_aur_tu',
+      'tr_mann_atkeya', 'tr_vaari_jaavan', 'tr_wild_ride',
+      'tr_rang_de_lal', 'tr_hum_pyaar', 'tr_shararat'
+    ],
+  },
+  {
+    id: 'alb_devara',
+    title: 'Devara Part 1',
+    artistId: 'art_3',
+    artistName: 'Anirudh Ravichander',
+    coverUrl: '/devara_poster.jpg',
+    releaseDate: '2024-09-27',
+    genre: 'Tollywood Mass / Action',
+    description: 'The monumental soundtrack of Devara Part 1 composed by Anirudh Ravichander.',
+    tracks: ['tr_devara', 'tr_devara_tiger', 'tr_devara_chuttamalle', 'tr_devara_redsea'],
+  },
   {
     id: 'alb_1',
     title: 'Neon Horizon',
@@ -171,9 +206,9 @@ export const INITIAL_TRACKS: Track[] = [
     title: 'Fear',
     artistId: 'art_3',
     artistName: 'Anirudh Ravichander',
-    albumId: 'alb_1',
+    albumId: 'alb_devara',
     albumName: 'Devara Part 1',
-    coverUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&q=80',
+    coverUrl: '/devara_poster.jpg',
     audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/DEVARA/Fear.mp3',
     duration: 195,
     genre: 'Tollywood Mass',
@@ -192,9 +227,9 @@ export const INITIAL_TRACKS: Track[] = [
     title: 'All Hail The Tiger',
     artistId: 'art_3',
     artistName: 'Anirudh Ravichander',
-    albumId: 'alb_1',
+    albumId: 'alb_devara',
     albumName: 'Devara Part 1',
-    coverUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&q=80',
+    coverUrl: '/devara_poster.jpg',
     audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/DEVARA/All%20Hail%20The%20Tiger.mp3',
     duration: 210,
     genre: 'Tollywood Mass',
@@ -213,9 +248,9 @@ export const INITIAL_TRACKS: Track[] = [
     title: 'Chuttamalle',
     artistId: 'art_3',
     artistName: 'Anirudh Ravichander',
-    albumId: 'alb_1',
+    albumId: 'alb_devara',
     albumName: 'Devara Part 1',
-    coverUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&q=80',
+    coverUrl: '/devara_poster.jpg',
     audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/DEVARA/Chuttamalle.mp3',
     duration: 222,
     genre: 'Tollywood Melody',
@@ -234,9 +269,9 @@ export const INITIAL_TRACKS: Track[] = [
     title: 'Red Sea',
     artistId: 'art_3',
     artistName: 'Anirudh Ravichander',
-    albumId: 'alb_1',
+    albumId: 'alb_devara',
     albumName: 'Devara Part 1',
-    coverUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&q=80',
+    coverUrl: '/devara_poster.jpg',
     audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/DEVARA/Red%20Sea.mp3',
     duration: 185,
     genre: 'Tollywood Mass',
@@ -249,6 +284,207 @@ export const INITIAL_TRACKS: Track[] = [
       { time: 30, text: "Devara - Unstoppable tide" },
       { time: 45, text: "Massive waves of Anirudh thunder" },
     ],
+  },
+  {
+    id: 'tr_didi',
+    title: 'Didi',
+    artistId: 'art_didi',
+    artistName: 'Shashwat Sachdev',
+    albumId: 'alb_dhurandhar',
+    albumName: 'Dhurandhar',
+    coverUrl: '/dhurandhar_poster.jpg',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/Didi-Shashwat-Sachdev-NaaSongs.mp3',
+    duration: 205,
+    genre: 'Bollywood / Indie',
+    playCount: 380000,
+    likes: 31000,
+    fileSize: '8.0 MB',
+    lyrics: [
+      { time: 0, text: "[Didi - Shashwat Sachdev Intro]" },
+      { time: 15, text: "Feel the vibrant beats and high-energy rhythm" },
+      { time: 30, text: "Shashwat Sachdev musical composition" },
+      { time: 45, text: "Didi reverberating energy" },
+    ],
+  },
+  {
+    id: 'tr_phir_se',
+    title: 'Phir Se',
+    artistId: 'art_didi',
+    artistName: 'Shashwat Sachdev',
+    albumId: 'alb_dhurandhar',
+    albumName: 'Dhurandhar',
+    coverUrl: '/dhurandhar_poster.jpg',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/Phir-Se-Shashwat-Sachdev-NaaSongs.mp3',
+    duration: 215,
+    genre: 'Bollywood / Indie',
+    playCount: 340000,
+    likes: 28000,
+    fileSize: '8.1 MB',
+  },
+  {
+    id: 'tr_aakhri_ishq',
+    title: 'Aakhri Ishq',
+    artistId: 'art_didi',
+    artistName: 'Shashwat Sachdev',
+    albumId: 'alb_dhurandhar',
+    albumName: 'Dhurandhar',
+    coverUrl: '/dhurandhar_poster.jpg',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/dhurandhar/Aakhri-Ishq-Shashwat-Sachdev-NaaSongs.mp3',
+    duration: 230,
+    genre: 'Bollywood / Indie',
+    playCount: 410000,
+    likes: 35000,
+    fileSize: '8.7 MB',
+  },
+  {
+    id: 'tr_aari_aari',
+    title: 'Aari Aari',
+    artistId: 'art_didi',
+    artistName: 'Shashwat Sachdev',
+    albumId: 'alb_dhurandhar',
+    albumName: 'Dhurandhar',
+    coverUrl: '/dhurandhar_poster.jpg',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/dhurandhar/Aari-Aari-Shashwat-Sachdev-NaaSongs.mp3',
+    duration: 198,
+    genre: 'Bollywood / Indie',
+    playCount: 390000,
+    likes: 32000,
+    fileSize: '7.8 MB',
+  },
+  {
+    id: 'tr_jaan_se_guzarte_hain',
+    title: 'Jaan Se Guzarte Hain',
+    artistId: 'art_khan_saab',
+    artistName: 'Khan Saab',
+    albumId: 'alb_dhurandhar',
+    albumName: 'Dhurandhar',
+    coverUrl: '/dhurandhar_poster.jpg',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/dhurandhar/Jaan-Se-Guzarte-Hain-Khan-Saab-NaaSongs.mp3',
+    duration: 245,
+    genre: 'Sufi / Bollywood',
+    playCount: 450000,
+    likes: 39000,
+    fileSize: '9.2 MB',
+  },
+  {
+    id: 'tr_jaiye_sanjana',
+    title: 'Jaiye Sajana',
+    artistId: 'art_jasmine',
+    artistName: 'Jasmine Sandlas',
+    albumId: 'alb_dhurandhar',
+    albumName: 'Dhurandhar',
+    coverUrl: '/dhurandhar_poster.jpg',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/dhurandhar/Jaiye-Sajana-Jasmine-Sandlas-NaaSongs.mp3',
+    duration: 202,
+    genre: 'Punjabi Pop',
+    playCount: 480000,
+    likes: 42000,
+    fileSize: '8.0 MB',
+  },
+  {
+    id: 'tr_main_aur_tu',
+    title: 'Main Aur Tu',
+    artistId: 'art_didi',
+    artistName: 'Shashwat Sachdev',
+    albumId: 'alb_dhurandhar',
+    albumName: 'Dhurandhar',
+    coverUrl: '/dhurandhar_poster.jpg',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/dhurandhar/Main-Aur-Tu-Shashwat-Sachdev-NaaSongs.mp3',
+    duration: 210,
+    genre: 'Bollywood / Indie',
+    playCount: 360000,
+    likes: 29000,
+    fileSize: '8.3 MB',
+  },
+  {
+    id: 'tr_mann_atkeya',
+    title: 'Mann Atkeya',
+    artistId: 'art_didi',
+    artistName: 'Shashwat Sachdev',
+    albumId: 'alb_dhurandhar',
+    albumName: 'Dhurandhar',
+    coverUrl: '/dhurandhar_poster.jpg',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/dhurandhar/Mann-Atkeya-Shashwat-Sachdev-NaaSongs.mp3',
+    duration: 225,
+    genre: 'Bollywood / Melodic',
+    playCount: 430000,
+    likes: 37000,
+    fileSize: '8.9 MB',
+  },
+  {
+    id: 'tr_vaari_jaavan',
+    title: 'Vaari Jaavan',
+    artistId: 'art_didi',
+    artistName: 'Shashwat Sachdev',
+    albumId: 'alb_dhurandhar',
+    albumName: 'Dhurandhar',
+    coverUrl: '/dhurandhar_poster.jpg',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/dhurandhar/Vaari-Jaavan-Shashwat-Sachdev-NaaSongs.mp3',
+    duration: 218,
+    genre: 'Bollywood / Indie',
+    playCount: 375000,
+    likes: 31500,
+    fileSize: '8.4 MB',
+  },
+  {
+    id: 'tr_wild_ride',
+    title: 'Wild Ride',
+    artistId: 'art_didi',
+    artistName: 'Shashwat Sachdev',
+    albumId: 'alb_dhurandhar',
+    albumName: 'Dhurandhar',
+    coverUrl: '/dhurandhar_poster.jpg',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/dhurandhar/Wild-Ride-Shaswat-Sachdev-NaaSongs.mp3',
+    duration: 190,
+    genre: 'Bollywood / Energy',
+    playCount: 510000,
+    likes: 46000,
+    fileSize: '7.6 MB',
+  },
+  {
+    id: 'tr_rang_de_lal',
+    title: 'Rang De Lal',
+    artistId: 'art_didi',
+    artistName: 'Shashwat Sachdev',
+    albumId: 'alb_dhurandhar',
+    albumName: 'Dhurandhar 2 - Revenge',
+    coverUrl: '/dhurandhar_poster.jpg',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/dhurandhar/Rang-De-Lal-Shashwat-Sachdev-NaaSongs.mp3',
+    duration: 212,
+    genre: 'Bollywood / Energy',
+    playCount: 520000,
+    likes: 48000,
+    fileSize: '8.2 MB',
+  },
+  {
+    id: 'tr_hum_pyaar',
+    title: 'Hum Pyaar Karne Wale',
+    artistId: 'art_didi',
+    artistName: 'Shashwat Sachdev',
+    albumId: 'alb_dhurandhar',
+    albumName: 'Dhurandhar 2 - Revenge',
+    coverUrl: '/dhurandhar_poster.jpg',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/dhurandhar/Hum-Pyaar-Karne-Wale-Shashwat-Sachdev-NaaSongs.mp3',
+    duration: 228,
+    genre: 'Bollywood / Romantic',
+    playCount: 490000,
+    likes: 44000,
+    fileSize: '8.8 MB',
+  },
+  {
+    id: 'tr_shararat',
+    title: 'Shararat',
+    artistId: 'art_didi',
+    artistName: 'Shashwat Sachdev',
+    albumId: 'alb_dhurandhar',
+    albumName: 'Dhurandhar 2 - Revenge',
+    coverUrl: '/dhurandhar_poster.jpg',
+    audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/dhurandhar/Shararat%20-%20NaaSongs.mp3',
+    duration: 205,
+    genre: 'Bollywood / Party',
+    playCount: 530000,
+    likes: 51000,
+    fileSize: '7.9 MB',
   },
   {
     id: 'tr_11',
@@ -352,11 +588,43 @@ export const INITIAL_TRACKS: Track[] = [
 
 export const INITIAL_PLAYLISTS: Playlist[] = [
   {
+    id: 'pl_dhurandhar',
+    name: 'Dhurandhar 2 - Revenge',
+    description: 'All official Dhurandhar tracks featuring Ranveer Singh & Shashwat Sachdev.',
+    coverUrl: '/dhurandhar_poster.jpg',
+    tracks: [
+      'tr_didi', 'tr_phir_se', 'tr_aakhri_ishq', 'tr_aari_aari',
+      'tr_jaan_se_guzarte_hain', 'tr_jaiye_sanjana', 'tr_main_aur_tu',
+      'tr_mann_atkeya', 'tr_vaari_jaavan', 'tr_wild_ride',
+      'tr_rang_de_lal', 'tr_hum_pyaar', 'tr_shararat'
+    ],
+    isPublic: true,
+    isCollaborative: false,
+    createdBy: 'system',
+    createdAt: '2026-01-01T00:00:00.000Z',
+  },
+  {
+    id: 'pl_devara',
+    name: 'Devara Part 1 Hits',
+    description: 'All official tracks from Devara Part 1 featuring Fear, All Hail The Tiger, Chuttamalle & Red Sea.',
+    coverUrl: '/devara_poster.jpg',
+    tracks: ['tr_devara', 'tr_devara_tiger', 'tr_devara_chuttamalle', 'tr_devara_redsea'],
+    isPublic: true,
+    isCollaborative: false,
+    createdBy: 'system',
+    createdAt: '2026-01-01T00:00:00.000Z',
+  },
+  {
     id: 'pl_dm1',
     name: 'FAVOURITE MUSIC',
-    description: 'Your curated favourite tracks featuring Fear, All Hail The Tiger, Chuttamalle, Red Sea, Meghallo, DARSHANA, anthinthom, karthikeya & Raga of Revenge.',
+    description: 'Your curated favourite tracks featuring Fear, All Hail The Tiger, Chuttamalle, Red Sea, Didi, Phir Se, Rang De Lal, Hum Pyaar Karne Wale, Dhurandhar hits & top tracks.',
     coverUrl: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=400&q=80',
-    tracks: ['tr_devara', 'tr_devara_tiger', 'tr_devara_chuttamalle', 'tr_devara_redsea', 'tr_15', 'tr_11', 'tr_12', 'tr_13', 'tr_14'],
+    tracks: [
+      'tr_devara', 'tr_devara_tiger', 'tr_devara_chuttamalle', 'tr_devara_redsea', 'tr_didi',
+      'tr_phir_se', 'tr_aakhri_ishq', 'tr_aari_aari', 'tr_jaan_se_guzarte_hain', 'tr_jaiye_sanjana',
+      'tr_main_aur_tu', 'tr_mann_atkeya', 'tr_vaari_jaavan', 'tr_wild_ride', 'tr_rang_de_lal', 'tr_hum_pyaar',
+      'tr_15', 'tr_11', 'tr_12', 'tr_13', 'tr_14'
+    ],
     isPublic: true,
     isCollaborative: true,
     createdBy: 'system',
@@ -376,9 +644,14 @@ export const INITIAL_PLAYLISTS: Playlist[] = [
   {
     id: 'pl_2',
     name: "Today's Top Hits",
-    description: "The hottest tracks trending on the airwaves featuring Fear, All Hail The Tiger, Chuttamalle, Red Sea & top hits.",
+    description: "The hottest tracks trending on the airwaves featuring Fear, All Hail The Tiger, Chuttamalle, Red Sea, Didi, Phir Se & Dhurandhar songs.",
     coverUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&q=80',
-    tracks: ['tr_devara', 'tr_devara_tiger', 'tr_devara_chuttamalle', 'tr_devara_redsea', 'tr_15', 'tr_11', 'tr_12', 'tr_13', 'tr_14'],
+    tracks: [
+      'tr_devara', 'tr_devara_tiger', 'tr_devara_chuttamalle', 'tr_devara_redsea', 'tr_didi',
+      'tr_phir_se', 'tr_aakhri_ishq', 'tr_aari_aari', 'tr_jaan_se_guzarte_hain', 'tr_jaiye_sanjana',
+      'tr_main_aur_tu', 'tr_mann_atkeya', 'tr_vaari_jaavan', 'tr_wild_ride',
+      'tr_15', 'tr_11', 'tr_12', 'tr_13', 'tr_14'
+    ],
     isPublic: true,
     isCollaborative: false,
     createdBy: 'system',
@@ -556,66 +829,22 @@ export const db = {
     if (missingInitials.length > 0) {
       result = [...stored, ...missingInitials];
     }
-    // Filter to tr_devara, tr_devara_tiger, tr_devara_chuttamalle, tr_devara_redsea, tr_11, tr_12, tr_13, tr_14, tr_15 and matching titles
-    result = result.filter(t => t.id === 'tr_devara' || t.id === 'tr_devara_tiger' || t.id === 'tr_devara_chuttamalle' || t.id === 'tr_devara_redsea' || t.id === 'tr_11' || t.id === 'tr_12' || t.id === 'tr_13' || t.id === 'tr_14' || t.id === 'tr_15' || t.title.toLowerCase().includes('devara') || t.title.toLowerCase().includes('tiger') || t.title.toLowerCase().includes('chuttamalle') || t.title.toLowerCase().includes('red sea') || t.title.toLowerCase().includes('meghallo') || t.title.toLowerCase().includes('darshana') || t.title.toLowerCase().includes('anthinthom') || t.title.toLowerCase().includes('karthikeya') || t.title.toLowerCase().includes('raga of revenge'));
-    if (!result.some(t => t.id === 'tr_devara')) {
-      const devara = INITIAL_TRACKS.find(t => t.id === 'tr_devara');
-      if (devara) result.unshift(devara);
-    }
-    if (!result.some(t => t.id === 'tr_devara_tiger')) {
-      const tiger = INITIAL_TRACKS.find(t => t.id === 'tr_devara_tiger');
-      if (tiger) {
-        const devaraIdx = result.findIndex(t => t.id === 'tr_devara');
-        if (devaraIdx !== -1) {
-          result.splice(devaraIdx + 1, 0, tiger);
-        } else {
-          result.unshift(tiger);
-        }
+    
+    // Ensure all INITIAL_TRACKS are present in result
+    INITIAL_TRACKS.forEach(initialTrack => {
+      if (!result.some(t => t.id === initialTrack.id)) {
+        result.push(initialTrack);
       }
-    }
-    if (!result.some(t => t.id === 'tr_devara_chuttamalle')) {
-      const chuttamalle = INITIAL_TRACKS.find(t => t.id === 'tr_devara_chuttamalle');
-      if (chuttamalle) {
-        const tigerIdx = result.findIndex(t => t.id === 'tr_devara_tiger');
-        if (tigerIdx !== -1) {
-          result.splice(tigerIdx + 1, 0, chuttamalle);
-        } else {
-          result.unshift(chuttamalle);
-        }
-      }
-    }
-    if (!result.some(t => t.id === 'tr_devara_redsea')) {
-      const redsea = INITIAL_TRACKS.find(t => t.id === 'tr_devara_redsea');
-      if (redsea) {
-        const chuttamalleIdx = result.findIndex(t => t.id === 'tr_devara_chuttamalle');
-        if (chuttamalleIdx !== -1) {
-          result.splice(chuttamalleIdx + 1, 0, redsea);
-        } else {
-          result.unshift(redsea);
-        }
-      }
-    }
-    if (!result.some(t => t.id === 'tr_12')) {
-      const darshana = INITIAL_TRACKS.find(t => t.id === 'tr_12');
-      if (darshana) result.push(darshana);
-    }
-    if (!result.some(t => t.id === 'tr_13')) {
-      const anthinthom = INITIAL_TRACKS.find(t => t.id === 'tr_13');
-      if (anthinthom) result.push(anthinthom);
-    }
-    if (!result.some(t => t.id === 'tr_14')) {
-      const karthikeya = INITIAL_TRACKS.find(t => t.id === 'tr_14');
-      if (karthikeya) result.push(karthikeya);
-    }
-    if (!result.some(t => t.id === 'tr_15')) {
-      const raga = INITIAL_TRACKS.find(t => t.id === 'tr_15');
-      if (raga) result.push(raga);
-    }
+    });
+
     result = result.map(t => {
       if (t.id === 'tr_devara') {
         return {
           ...t,
           title: 'Fear',
+          coverUrl: '/devara_poster.jpg',
+          albumId: 'alb_devara',
+          albumName: 'Devara Part 1',
           audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/DEVARA/Fear.mp3',
           artistName: 'Anirudh Ravichander',
           fileSize: '7.8 MB',
@@ -625,6 +854,9 @@ export const db = {
         return {
           ...t,
           title: 'All Hail The Tiger',
+          coverUrl: '/devara_poster.jpg',
+          albumId: 'alb_devara',
+          albumName: 'Devara Part 1',
           audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/DEVARA/All%20Hail%20The%20Tiger.mp3',
           artistName: 'Anirudh Ravichander',
           fileSize: '8.2 MB',
@@ -634,6 +866,9 @@ export const db = {
         return {
           ...t,
           title: 'Chuttamalle',
+          coverUrl: '/devara_poster.jpg',
+          albumId: 'alb_devara',
+          albumName: 'Devara Part 1',
           audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/DEVARA/Chuttamalle.mp3',
           artistName: 'Anirudh Ravichander',
           fileSize: '8.5 MB',
@@ -643,9 +878,20 @@ export const db = {
         return {
           ...t,
           title: 'Red Sea',
+          coverUrl: '/devara_poster.jpg',
+          albumId: 'alb_devara',
+          albumName: 'Devara Part 1',
           audioUrl: 'https://nrulbonahqvdopqlbcen.supabase.co/storage/v1/object/public/songs/DEVARA/Red%20Sea.mp3',
           artistName: 'Anirudh Ravichander',
           fileSize: '7.5 MB',
+        };
+      }
+      if (['tr_didi', 'tr_phir_se', 'tr_aakhri_ishq', 'tr_aari_aari', 'tr_jaan_se_guzarte_hain', 'tr_jaiye_sanjana', 'tr_main_aur_tu', 'tr_mann_atkeya', 'tr_vaari_jaavan', 'tr_wild_ride', 'tr_rang_de_lal', 'tr_hum_pyaar', 'tr_shararat'].includes(t.id)) {
+        return {
+          ...t,
+          coverUrl: '/dhurandhar_poster.jpg',
+          albumId: 'alb_dhurandhar',
+          albumName: 'Dhurandhar 2 - Revenge',
         };
       }
       if (t.id === 'tr_11') {
@@ -716,10 +962,34 @@ export const db = {
   // Albums
   getAlbums: (): Album[] => {
     const stored = getLocalStorage<Album[]>(KEYS.ALBUMS, INITIAL_ALBUMS);
-    const updated = stored.map(a => ({
-      ...a,
-      tracks: ['tr_11'],
-    }));
+    if (!stored.some(a => a.id === 'alb_dhurandhar')) {
+      const dhurandharAlb = INITIAL_ALBUMS.find(a => a.id === 'alb_dhurandhar');
+      if (dhurandharAlb) stored.unshift(dhurandharAlb);
+    }
+    const updated = stored.map(a => {
+      if (a.id === 'alb_dhurandhar') {
+        return {
+          ...a,
+          title: 'Dhurandhar 2 - Revenge',
+          coverUrl: '/dhurandhar_poster.jpg',
+          tracks: [
+            'tr_didi', 'tr_phir_se', 'tr_aakhri_ishq', 'tr_aari_aari',
+            'tr_jaan_se_guzarte_hain', 'tr_jaiye_sanjana', 'tr_main_aur_tu',
+            'tr_mann_atkeya', 'tr_vaari_jaavan', 'tr_wild_ride',
+            'tr_rang_de_lal', 'tr_hum_pyaar', 'tr_shararat'
+          ],
+        };
+      }
+      if (a.id === 'alb_devara') {
+        return {
+          ...a,
+          title: 'Devara Part 1',
+          coverUrl: '/devara_poster.jpg',
+          tracks: ['tr_devara', 'tr_devara_tiger', 'tr_devara_chuttamalle', 'tr_devara_redsea'],
+        };
+      }
+      return a;
+    });
     setLocalStorage<Album[]>(KEYS.ALBUMS, updated);
     return updated;
   },
@@ -747,21 +1017,56 @@ export const db = {
   getPlaylists: (): Playlist[] => {
     const stored = getLocalStorage<Playlist[]>(KEYS.PLAYLISTS, INITIAL_PLAYLISTS);
     const filtered = stored.filter(p => !['pl_dm2', 'pl_dm3', 'pl_dm4', 'pl_dm5', 'pl_dm6'].includes(p.id));
+    const allTopTracks = [
+      'tr_devara', 'tr_devara_tiger', 'tr_devara_chuttamalle', 'tr_devara_redsea', 'tr_didi',
+      'tr_phir_se', 'tr_aakhri_ishq', 'tr_aari_aari', 'tr_jaan_se_guzarte_hain', 'tr_jaiye_sanjana',
+      'tr_main_aur_tu', 'tr_mann_atkeya', 'tr_vaari_jaavan', 'tr_wild_ride', 'tr_rang_de_lal', 'tr_hum_pyaar', 'tr_shararat',
+      'tr_15', 'tr_11', 'tr_12', 'tr_13', 'tr_14'
+    ];
+    if (!filtered.some(p => p.id === 'pl_dhurandhar')) {
+      const dhurandharPl = INITIAL_PLAYLISTS.find(p => p.id === 'pl_dhurandhar');
+      if (dhurandharPl) filtered.unshift(dhurandharPl);
+    }
+    if (!filtered.some(p => p.id === 'pl_devara')) {
+      const devaraPl = INITIAL_PLAYLISTS.find(p => p.id === 'pl_devara');
+      if (devaraPl) filtered.unshift(devaraPl);
+    }
     const updated = filtered.map(p => {
+      if (p.id === 'pl_dhurandhar') {
+        return {
+          ...p,
+          name: 'Dhurandhar 2 - Revenge',
+          coverUrl: '/dhurandhar_poster.jpg',
+          tracks: [
+            'tr_didi', 'tr_phir_se', 'tr_aakhri_ishq', 'tr_aari_aari',
+            'tr_jaan_se_guzarte_hain', 'tr_jaiye_sanjana', 'tr_main_aur_tu',
+            'tr_mann_atkeya', 'tr_vaari_jaavan', 'tr_wild_ride',
+            'tr_rang_de_lal', 'tr_hum_pyaar', 'tr_shararat'
+          ],
+        };
+      }
+      if (p.id === 'pl_devara') {
+        return {
+          ...p,
+          name: 'Devara Part 1 Hits',
+          coverUrl: '/devara_poster.jpg',
+          tracks: ['tr_devara', 'tr_devara_tiger', 'tr_devara_chuttamalle', 'tr_devara_redsea'],
+        };
+      }
       if (p.id === 'pl_dm1') {
         return {
           ...p,
           name: 'FAVOURITE MUSIC',
-          description: 'Your curated favourite tracks featuring Fear, All Hail The Tiger, Chuttamalle, Red Sea, Meghallo, DARSHANA, anthinthom, karthikeya & Raga of Revenge.',
-          tracks: ['tr_devara', 'tr_devara_tiger', 'tr_devara_chuttamalle', 'tr_devara_redsea', 'tr_15', 'tr_11', 'tr_12', 'tr_13', 'tr_14'],
+          description: 'Your curated favourite tracks featuring Fear, All Hail The Tiger, Chuttamalle, Red Sea, Didi, Phir Se, Dhurandhar hits & top tracks.',
+          tracks: allTopTracks,
         };
       }
       if (p.id === 'pl_2') {
         return {
           ...p,
           name: "Today's Top Hits",
-          description: "The hottest tracks trending on the airwaves featuring Fear, All Hail The Tiger, Chuttamalle, Red Sea & top hits.",
-          tracks: ['tr_devara', 'tr_devara_tiger', 'tr_devara_chuttamalle', 'tr_devara_redsea', 'tr_15', 'tr_11', 'tr_12', 'tr_13', 'tr_14'],
+          description: "The hottest tracks trending on the airwaves featuring Fear, All Hail The Tiger, Chuttamalle, Red Sea, Didi, Phir Se & Dhurandhar songs.",
+          tracks: allTopTracks,
         };
       }
       return p;
@@ -786,7 +1091,7 @@ export const db = {
 
   // Liked / Saved state
   getFavorites: (): string[] => {
-    return ['tr_11'];
+    return getLocalStorage<string[]>(KEYS.FAVORITES, ['tr_11']);
   },
   setFavorites: (favorites: string[]) => setLocalStorage<string[]>(KEYS.FAVORITES, favorites),
   toggleFavorite: (trackId: string): boolean => {

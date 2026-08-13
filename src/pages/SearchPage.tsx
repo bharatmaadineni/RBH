@@ -59,7 +59,27 @@ export const SearchPage: React.FC = () => {
       (t.albumName && t.albumName.toLowerCase().includes('devara')) ||
       ['fear', 'all hail the tiger', 'chuttamalle', 'red sea'].some(name => t.title.toLowerCase().includes(name));
 
-    const matchesQuery = matchesDirect || (isDevaraQuery && isDevaraTrack);
+    const isDhurandharQuery = 
+      q.includes('dhurandhar') || 
+      q.includes('dhurander') || 
+      q.includes('dhurandar') || 
+      q.includes('dhurandher') ||
+      q.includes('durandhar') ||
+      q.includes('durander');
+
+    const dhurandharTrackIds = [
+      'tr_didi', 'tr_phir_se', 'tr_aakhri_ishq', 'tr_aari_aari', 
+      'tr_jaan_se_guzarte_hain', 'tr_jaiye_sanjana', 'tr_main_aur_tu', 
+      'tr_mann_atkeya', 'tr_vaari_jaavan', 'tr_wild_ride',
+      'tr_rang_de_lal', 'tr_hum_pyaar', 'tr_shararat'
+    ];
+
+    const isDhurandharTrack = 
+      dhurandharTrackIds.includes(t.id) ||
+      (t.albumName && t.albumName.toLowerCase().includes('dhurandhar')) ||
+      ['didi', 'phir se', 'aakhri ishq', 'aari aari', 'jaan se', 'jaiye', 'jayiye', 'main aur', 'vaari jaavan', 'wild ride', 'mann atkeya', 'rang de lal', 'hum pyaar', 'shararat'].some(name => t.title.toLowerCase().includes(name));
+
+    const matchesQuery = matchesDirect || (isDevaraQuery && isDevaraTrack) || (isDhurandharQuery && isDhurandharTrack);
     const matchesGenre = selectedGenre === 'All' || t.genre.toLowerCase() === selectedGenre.toLowerCase();
     return matchesQuery && matchesGenre;
   });
